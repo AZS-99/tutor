@@ -1,0 +1,42 @@
+*.cover-parent {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+*.cover-screen {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+}
+
+*.absolute {
+    position: absolute;
+}
+
+*.absolute-btm-10pt {
+    position: absolute;
+    bottom: 10%;
+}
+
+*.absolute-z1 {
+    position: absolute;
+    z-index: 1;
+}
+
+*.absolute-z2 {
+    position: absolute;
+    z-index: 2;
+}
+
+*.fixed {
+    position: fixed;
+}
+
+*.relative {
+    position: relative;
+}
+
+*.top0 {
+    top: 0;
+}

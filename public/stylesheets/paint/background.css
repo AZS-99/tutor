@@ -1,0 +1,64 @@
+*.bg-amber {
+
+}
+
+*.bg-black {
+    background-color: black;
+}
+
+*.bg-black-50pt {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+*.bg-blue {
+    background-color: blue;
+}
+
+*.bg-crimson {
+    background-color: crimson;
+}
+
+*.bg-deeppink {
+    background-color: deeppink;
+}
+
+*.bg-grey {
+    background-color: gray;
+}
+
+*.bg-green {
+    background-color: #28a745;
+}
+
+*.bg-green-50pt {
+    background-color: rgba(0, 100, 0, 0.5);
+}
+
+*.bg-imperialred {
+    background-color: #ed2939;
+}
+
+*.bg-red {
+    background-color: red;
+}
+
+*.bg-red-50pt {
+    background-color: rgba(100, 0, 0, 0.5);
+}
+
+*.bg-pink {
+    background-color: pink;
+}
+
+*.bg-turquoise {
+    background-color: turquoise;
+}
+
+*.bg-white {
+    background-color: white;
+}
+
+
+*.bg-theme {
+    background-color: var(--theme-color);
+}

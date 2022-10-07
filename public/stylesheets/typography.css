@@ -1,0 +1,780 @@
+/*
+Like in microsoft office
+We have 3 sections max
+The first is for BIU (bold - italic - underlined), they have to be in that order
+The second is reserved for the font
+And the third is for the alignment
+ */
+
+*.cap:first-letter {
+    text-transform: capitalize;
+}
+
+*.B {
+    font-weight: bold;
+}
+
+*.B-lg {
+    font-weight: bold;
+    font-size: large;
+}
+
+*.B-lg-left {
+    font-weight: bold;
+    font-size: large;
+    text-align: left;
+}
+
+*.B-lg-right {
+    font-weight: bold;
+    font-size: large;
+    text-align: right;
+}
+
+*.B-lg-centre {
+    font-weight: bold;
+    font-size: large;
+    text-align: center;
+}
+
+*.B-xlg {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+*.B-xlg-left {
+    font-weight: bold;
+    font-size: x-large;
+    text-align: left;
+}
+
+*.B-xlg-right {
+    font-weight: bold;
+    font-size: x-large;
+    text-align: right;
+}
+
+*.B-xlg-centre {
+    font-weight: bold;
+    font-size: x-large;
+    text-align: center;
+}
+
+*.B-xxlg {
+    font-weight: bold;
+    font-size: xx-large;
+}
+
+*.B-xxlg-left {
+    font-weight: bold;
+    font-size: xx-large;
+    text-align: left;
+}
+
+*.B-xxlg-right {
+    font-weight: bold;
+    font-size: xx-large;
+    text-align: right;
+}
+
+*.B-xxlg-centre {
+    font-weight: bold;
+    font-size: xx-large;
+    text-align: center;
+}
+
+*.B-left {
+    font-weight: bold;
+    text-align: left;
+}
+
+*.B-right {
+    font-weight: bold;
+    text-align: right;
+}
+
+*.B-centre {
+    font-weight: bold;
+    text-align: center;
+}
+
+*.BI {
+    font-weight: bold;
+    font-style: italic;
+}
+
+*.BI-lg {
+    font-weight: bold;
+    font-style: italic;
+    font-size: large;
+}
+
+*.BI-lg-left {
+    font-weight: bold;
+    font-style: italic;
+    font-size: large;
+    text-align: left;
+}
+
+*.BI-lg-right {
+    font-weight: bold;
+    font-style: italic;
+    font-size: large;
+    text-align: right;
+}
+
+*.BI-lg-centre {
+    font-weight: bold;
+    font-style: italic;
+    font-size: large;
+    text-align: center;
+}
+
+*.BI-xlg {
+    font-weight: bold;
+    font-style: italic;
+    font-size: x-large;
+}
+
+*.BI-xlg-left {
+    font-weight: bold;
+    font-style: italic;
+    font-size: x-large;
+    text-align: left;
+}
+
+*.BI-xlg-right {
+    font-weight: bold;
+    font-style: italic;
+    font-size: x-large;
+    text-align: right;
+}
+
+*.BI-xlg-centre {
+    font-weight: bold;
+    font-style: italic;
+    font-size: x-large;
+    text-align: center;
+}
+
+*.BI-xxlg {
+    font-weight: bold;
+    font-style: italic;
+    font-size: xx-large;
+}
+
+*.BI-xxlg-left {
+    font-weight: bold;
+    font-style: italic;
+    font-size: xx-large;
+    text-align: left;
+}
+
+*.BI-xxlg-right {
+    font-weight: bold;
+    font-style: italic;
+    font-size: xx-large;
+    text-align: right;
+}
+
+*.BI-xxlg-centre {
+    font-weight: bold;
+    font-style: italic;
+    font-size: xx-large;
+    text-align: center;
+}
+
+*.BI-left {
+    font-weight: bold;
+    font-style: italic;
+    text-align: left;
+}
+
+*.BI-right {
+    font-weight: bold;
+    font-style: italic;
+    text-align: right;
+}
+
+*.BI-centre {
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+}
+
+*.BU {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+*.BU-lg {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: large;
+}
+
+*.BU-lg-left {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: large;
+    text-align: left;
+}
+
+*.BU-lg-right {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: large;
+    text-align: right;
+}
+
+*.BU-lg-centre {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: large;
+    text-align: center;
+}
+
+*.BU-xlg {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: x-large;
+}
+
+*.BU-xlg-left {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: left;
+}
+
+*.BU-xlg-right {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: right;
+}
+
+*.BU-xlg-centre {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: center;
+}
+
+*.BU-xxlg {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: xx-large;
+}
+
+*.BU-xxlg-left {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: left;
+}
+
+*.BU-xxlg-right {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: right;
+}
+
+*.BU-xxlg-centre {
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: center;
+}
+
+*.BU-left {
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: left;
+}
+
+*.BU-right {
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: right;
+}
+
+*.BU-centre {
+    font-weight: bold;
+    text-decoration: underline;
+    text-align: center;
+}
+
+*.BIU {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+}
+
+*.BIU-lg {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: large;
+}
+
+*.BIU-lg-left {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: large;
+    text-align: left;
+}
+
+*.BIU-lg-right {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: large;
+    text-align: right;
+}
+
+*.BIU-lg-centre {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: large;
+    text-align: center;
+}
+
+*.BIU-xlg {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: x-large;
+}
+
+*.BIU-xlg-left {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: x-large;
+    text-align: left;
+}
+
+*.BIU-xlg-right {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: x-large;
+    text-align: right;
+}
+
+*.BIU-xlg-centre {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: x-large;
+    text-align: center;
+}
+
+*.BIU-xxlg {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: xx-large;
+}
+
+*.BIU-xxlg-left {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: xx-large;
+    text-align: left;
+}
+
+*.BIU-xxlg-right {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: xx-large;
+    text-align: right;
+}
+
+*.BIU-xxlg-centre {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    font-size: xx-large;
+    text-align: center;
+}
+
+*.BIU-left {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    text-align: left;
+}
+
+*.BIU-right {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    text-align: right;
+}
+
+*.BIU-centre {
+    font-weight: bold;
+    text-decoration: underline;
+    font-style: italic;
+    text-align: center;
+}
+
+*.I {
+    font-style: italic;
+}
+
+*.I-lg {
+    font-style: italic;
+    font-size: large;
+}
+
+*.I-lg-left {
+    font-style: italic;
+    font-size: large;
+    text-align: left;
+}
+
+*.I-lg-right {
+    font-style: italic;
+    font-size: large;
+    text-align: right;
+}
+
+*.I-lg-centre {
+    font-style: italic;
+    font-size: large;
+    text-align: center;
+}
+
+*.I-xlg {
+    font-style: italic;
+    font-size: x-large;
+}
+
+*.I-xlg-left {
+    font-style: italic;
+    font-size: x-large;
+    text-align: left;
+}
+
+*.I-xlg-right {
+    font-style: italic;
+    font-size: x-large;
+    text-align: right;
+}
+
+*.I-xlg-centre {
+    font-style: italic;
+    font-size: x-large;
+    text-align: center;
+}
+
+*.I-xxlg {
+    font-style: italic;
+    font-size: xx-large;
+}
+
+*.I-xxlg-left {
+    font-style: italic;
+    font-size: xx-large;
+    text-align: left;
+}
+
+*.I-xxlg-right {
+    font-style: italic;
+    font-size: xx-large;
+    text-align: right;
+}
+
+*.I-xxlg-centre {
+    font-style: italic;
+    font-size: xx-large;
+    text-align: center;
+}
+
+*.I-left {
+    font-style: italic;
+    text-align: left;
+}
+
+*.I-right {
+    font-style: italic;
+    text-align: right;
+}
+
+*.I-centre {
+    font-style: italic;
+    text-align: center;
+}
+
+*.IU {
+    font-style: italic;
+    text-decoration: underline;
+}
+
+*.IU-lg {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: large;
+}
+
+*.IU-lg-left {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: large;
+    text-align: left;
+}
+
+*.IU-lg-right {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: large;
+    text-align: right;
+}
+
+*.IU-lg-centre {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: large;
+    text-align: center;
+}
+
+*.IU-xlg {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: x-large;
+}
+
+*.IU-xlg-left {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: left;
+}
+
+*.IU-xlg-right {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: right;
+}
+
+*.IU-xlg-centre {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: center;
+}
+
+*.IU-xxlg {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: xx-large;
+}
+
+*.IU-xxlg-left {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: left;
+}
+
+*.IU-xxlg-right {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: right;
+}
+
+*.IU-xxlg-centre {
+    font-style: italic;
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: center;
+}
+
+*.IU-left {
+    font-style: italic;
+    text-decoration: underline;
+    text-align: left;
+}
+
+*.IU-right {
+    font-style: italic;
+    text-decoration: underline;
+    text-align: right;
+}
+
+*.IU-centre {
+    font-style: italic;
+    text-decoration: underline;
+    text-align: center;
+}
+
+*.U {
+    text-decoration: underline;
+}
+
+*.U-lg {
+    text-decoration: underline;
+    font-size: large;
+}
+
+*.U-lg-left {
+    text-decoration: underline;
+    font-size: large;
+    text-align: left;
+}
+
+*.U-lg-right {
+    text-decoration: underline;
+    font-size: large;
+    text-align: right;
+}
+
+*.U-lg-centre {
+    text-decoration: underline;
+    font-size: large;
+    text-align: center;
+}
+
+*.U-xlg {
+    text-decoration: underline;
+    font-size: x-large;
+}
+
+*.U-xlg-left {
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: left;
+}
+
+*.U-xlg-right {
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: right;
+}
+
+*.U-xlg-centre {
+    text-decoration: underline;
+    font-size: x-large;
+    text-align: center;
+}
+
+*.U-xxlg {
+    text-decoration: underline;
+    font-size: xx-large;
+}
+
+*.U-xxlg-left {
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: left;
+}
+
+*.U-xxlg-right {
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: right;
+}
+
+*.U-xxlg-centre {
+    text-decoration: underline;
+    font-size: xx-large;
+    text-align: center;
+}
+
+*.U-left {
+    text-decoration: underline;
+    text-align: left;
+}
+
+*.U-right {
+    text-decoration: underline;
+    text-align: right;
+}
+
+*.U-centre {
+    text-decoration: underline;
+    text-align: center;
+}
+
+*.lg {
+    font-size: large;
+}
+
+*.lg-left {
+    font-size: large;
+    text-align: left;
+}
+
+*.lg-right {
+    font-size: large;
+    text-align: right;
+}
+
+*.lg-centre {
+    font-size: large;
+    text-align: center;
+}
+
+*.xlg {
+    font-size: x-large;
+}
+
+*.xlg-left {
+    font-size: x-large;
+    text-align: left;
+}
+
+*.xlg-right {
+    font-size: x-large;
+    text-align: right;
+}
+
+*.xlg-centre {
+    font-size: x-large;
+    text-align: center;
+}
+
+*.xxlg {
+    font-size: xx-large;
+}
+
+*.xxlg-left {
+    font-size: xx-large;
+    text-align: left;
+}
+
+*.xxlg-right {
+    font-size: xx-large;
+    text-align: right;
+}
+
+*.xxlg-centre {
+    font-size: xx-large;
+    text-align: center;
+}
+
+*.centre {
+    text-align: center;
+}
+
+*.left {
+    text-align: left;
+}
+
+*.right {
+    text-align: right;
+}
+
+*.wb {
+    word-wrap: break-word;
+}

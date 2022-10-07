@@ -1,0 +1,29 @@
+*.dropdown li:hover {
+    transition-duration: 1s;
+}
+
+*.dropdown li:hover {
+    cursor: pointer;
+}
+
+*.dropdown > ul {
+    border-radius: 0.25rem;
+    visibility: hidden;
+    position: absolute;
+    padding: 0;
+    transition-duration: 0.5s;
+}
+
+*.dropdown > ul > li {
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+
+}
+
+*.dropdown:hover > ul {
+    visibility: visible;
+}
+
+*.dropdown:hover > ul > li:hover {
+    background-color: blue;
+}
