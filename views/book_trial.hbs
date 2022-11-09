@@ -1,0 +1,23 @@
+{{>navbar}}
+<div class="flex-ctr">
+    <form action="/users/book_trial" method="POST" class="grid-2x2-gap1" >
+        <label class="B-xlg">Language</label>
+        <select name="lang" class="xlg">
+            <option class="xlg" value="c">C++</option>
+            <option value="java">Java</option>
+            <option value="python">Python</option>
+        </select>
+        <label class="B-xlg">Date</label>
+        <input name="date" type="date" class="xlg" min="2023-01-01">
+
+        <label class="B-xlg">Time</label>
+        <div>
+            <input name="time" type="time" class="xlg" step="1800"/>
+            <span></span>
+        </div>
+
+
+        <button>Submit</button>
+    </form>
+
+</div>

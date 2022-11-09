@@ -3,6 +3,14 @@
     color: #28a745;
 }
 
+*.txt-blue {
+    color: blue;
+}
+
+*.txt-royalblue {
+    color: royalblue;
+}
+
 *.txt-red {
     color: #dc3545;
 }

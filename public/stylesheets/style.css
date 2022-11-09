@@ -116,3 +116,16 @@ ul {
 }
 
 
+input:invalid+span:after {
+  content: '✖';
+  color: indianred;
+
+}
+
+/*input:valid+span:after {*/
+/*  content: '✓';*/
+/*  color: forestgreen;*/
+/*  font-width: inherit;*/
+/*}*/
+
+

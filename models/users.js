@@ -35,6 +35,11 @@ module.exports = (Sequelise, database) => {
                     msg: ['Server rejected password']
                 }
             }
+        },
+        position: {
+            type: Sequelise.ENUM,
+            values: ["STUDENT", "INSTRUCTOR"],
+            allowNull: false
         }
 
     }, {

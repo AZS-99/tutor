@@ -1,5 +1,5 @@
 module.exports = (Sequelize, database) => {
-    return database.define("pupils", {
+    return database.define("students", {
         id: {
             type: "INT REFERENCES users(id)",
             primaryKey: true

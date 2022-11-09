@@ -8,12 +8,28 @@
             <input type="password" name="password" class="xlg span-all-cols" placeholder="Password"
                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w-]{8,30}$" autocomplete="new-password" required/>
 
+            <select name="position" class="xlg">
+                <option value="student">Student</option>
+                <option value="instructor">Instructor</option>
+            </select>
+
+            <select name="grade" class="xlg">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+
             <input type="hidden" name="_csrf" value="{{csurf_token}}" />
+
 
             <div class="span-all-cols flex-spread">
                 <button class="xlg btn-luminous">Submit</button>
                 <button class="xlg btn-luminous-red" type="button"><label for="sign_up">Cancel</label></button>
             </div>
+
+            <label class="lg">Already have an account? <a href="/users/log_in" class="B txt-royalblue">Log in</a></label>
+
         </fieldset>
 
     </form>

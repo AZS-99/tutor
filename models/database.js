@@ -10,12 +10,38 @@ const database = new Sequelise(process.env.DATABASE_URL)
 const users = require('./users')(Sequelise, database);
 const students = require('./students')(Sequelise, database);
 const instructors = require('./instructors')(Sequelise, database);
+const appointments = require('./appointments')(Sequelise, database);
 const sessions = require('./sessions')(Sequelise, database);
+
 
 
 module.exports.initialise = async () => {
     try {await database.sync()}
     catch(e) {throw e}
+}
+
+
+module.exports.add_instructor = async (id, hourly_rate) => {
+    try {
+        await instructors.create({
+            id: id,
+            hourly_rate: hourly_rate
+        })
+    } catch (e) {
+        throw e;
+    }
+}
+
+
+module.exports.add_student = async (id, grade) => {
+    try {
+        const student = await students.create({
+            id: id,
+            grade: grade
+        })
+    } catch (e) {
+        throw e;
+    }
 }
 
 
@@ -45,4 +71,46 @@ module.exports.get_user = async (field, value) => {
                 plain: true
             })
     } catch (error) { throw error }
+}
+
+
+
+
+module.exports.set_appointment = async (year, month, day, half_hr, count_halves, student_id) => {
+    try {
+        for (let i = 0; i < count_halves; ++i) {
+            await appointments.create({
+                year: year,
+                month: month,
+                day: day,
+                half_hr: half_hr + i,
+                student_id: student_id,
+                instructor_id: 2,
+                status: "PENDING"
+            });
+        }
+    } catch (e) {throw e;}
+}
+
+
+module.exports.get_unavailable_slots = async (year, month, day, instructor_id) => {
+    try {
+        return await database.query(`
+            SELECT half_hr
+            FROM appointments
+            WHERE appointments.year = :year AND appointments.month = :month AND appointments.day = :day 
+              AND appointments.instructor_id = :instructor_id`
+        ,{
+            replacements: {
+                year: year,
+                month: month,
+                day: day,
+                instructor_id: instructor_id
+            },
+                type: QueryTypes.SELECT,
+                raw: true
+        })
+    } catch (e) {
+        throw e;
+    }
 }

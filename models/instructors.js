@@ -1,11 +1,10 @@
-const bcrypt = require("bcrypt");
 module.exports = (Sequelise, database) => {
-    return database.define('students', {
+    return database.define('instructors', {
         id: {
-          type: "INT PRIMARY KEY REFERENCES users(id)",
+          type: "INT REFERENCES users(id)",
           primaryKey: true
         },
-        hourly_rate: "INT NOT NULL check(hourly_rate > 0)"
+        hourly_rate: "INT NOT NULL CHECK(hourly_rate > 0)"
     }, {
         freezeTableName: true
     });

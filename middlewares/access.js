@@ -1,12 +1,12 @@
 const bcrypt = require("bcrypt");
 
 module.exports.ensure_admin_authority = (req, res, next) => {
-    req.session.user && req.session.user.is_admin ? next() : res.redirect('/')
+    req.session.user && req.session.user.is_admin? next() : res.redirect('/')
 }
 
 
 module.exports.ensure_log_in = (req, res, next) => {
-    req.session.user? next() : res.redirect('/')
+    req.session.user? next() : res.redirect('/users/sign_up')
 }
 
 
