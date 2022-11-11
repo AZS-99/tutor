@@ -16,7 +16,10 @@ const bookingRouter = require('./routes/book')
 
 const globals = require("./middlewares/globals")
 
+
 const app = express();
+
+
 
 
 // view engine setup
@@ -38,6 +41,8 @@ app.engine('hbs', exphbs.engine({
     }
   }
 }));
+
+app.use(helmet())
 
 app.use(session)
 app.use(globals)
