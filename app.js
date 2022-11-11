@@ -12,6 +12,7 @@ const session = require('./middlewares/session')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const bookingRouter = require('./routes/book')
 
 const globals = require("./middlewares/globals")
 
@@ -43,6 +44,7 @@ app.use(globals)
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/book', bookingRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

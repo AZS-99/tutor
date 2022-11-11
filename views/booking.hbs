@@ -1,6 +1,13 @@
 {{>navbar}}
 <div class="grid-4x1">
-    <label>Book one hour</label>
+    <div>
+        <label>Book one hour</label>
+        <form action="/book/create_checkout_session" method="POST">
+            <input name="hi"/>
+            <button type="submit">Checkout</button>
+        </form>
+    </div>
+
     <label>5 hours package </label>
     <label>10 hours package </label>
     <label>20 hours package</label>

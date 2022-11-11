@@ -3,11 +3,13 @@
 /**
  * Module dependencies.
  */
-
+require('dotenv').config()
 const app = require('../app');
 const debug = require('debug')('tutor:server');
 const database = require("../models/database")
 const http = require('http');
+
+const stripe = require('stripe')('sk_test_51M1zZZKgvv1eRC7rBgnByDQdn91Zs2vddghqvN3VjEO88sEVuZPttsXIM4AzWZVzC9tqEWqnWpHKXLAYJ9JIfmvD006mwpuT8W', {apiVersion: "2022-08-01"});
 
 /**
  * Get port from environment and store in Express.
@@ -85,13 +87,17 @@ function onError(error) {
 async function onListening() {
   try {
     await database.initialise();
+    const customer = await stripe.customers.create({
+      email: 'adam.zachary.saher@gmail.com'
+    });
+    console.log("stripe customer id:", customer.id)
     const addr = server.address();
     const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     debug('Listening on ' + bind);
   } catch (e) {
-
+    console.log(e.message)
   }
 
 }
