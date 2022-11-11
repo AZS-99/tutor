@@ -1,6 +1,6 @@
 const express = require('express')
 const database = require('../models/database')
-const stripe = require('stripe')('sk_test_51M1zZZKgvv1eRC7rBgnByDQdn91Zs2vddghqvN3VjEO88sEVuZPttsXIM4AzWZVzC9tqEWqnWpHKXLAYJ9JIfmvD006mwpuT8W', {apiVersion: "2022-08-01"});
+const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-08-01"});
 
 
 const router = express.Router();
@@ -38,7 +38,7 @@ router.post('/create-checkout-session', async (req, res) => {
                         product_data: {
                             name: '10 hrs Package',
                         },
-                        unit_amount: 27000,
+                        unit_amount: 100,
                     },
                     quantity: 1,
                 },
