@@ -34,11 +34,11 @@ router.post('/create-checkout-session', async (req, res) => {
             line_items: [
                 {
                     price_data: {
-                        currency: 'usd',
+                        currency: 'cad',
                         product_data: {
                             name: '10 hrs Package',
                         },
-                        unit_amount: 100,
+                        unit_amount: 1000,
                     },
                     quantity: 1,
                 },
