@@ -44,8 +44,8 @@ router.post('/create-checkout-session', async (req, res) => {
                 },
             ],
             mode: 'payment',
-            success_url: 'http://localhost:3000/success',
-            cancel_url: 'http://localhost:3000/cancel',
+            success_url: process.env.NODE_ENV === 'production'? 'http://www.sigmaedu/book/success' : 'http://localhost:3000/success',
+            cancel_url: process.env.NODE_ENV === 'production'? 'http://www.sigmaedu/book/cancel' : 'http://localhost:3000/cancel'
         });
 
         res.redirect(303, session.url);
@@ -60,6 +60,14 @@ router.get('/checkout', (req, res) => {
     res.render('checkout', {
         layout: 'checkoutLay'
     });
+})
+
+router.get('/success', (req, res) => {
+    res.send("SUCCESS");
+});
+
+router.get('/failure', (req, res) => {
+    res.send("Failure");
 })
 
 

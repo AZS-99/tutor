@@ -9,12 +9,6 @@ router.get('/', (req, res, next) => {
 });
 
 
-router.get('/success', (req, res) => {
-    res.send("SUCCESS");
-});
 
-router.get('/failure', (req, res) => {
-    res.send("Failure");
-})
 
 module.exports = router;
