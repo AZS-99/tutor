@@ -30,22 +30,23 @@ const router = express.Router();
 
 router.post('/create-checkout-session', async (req, res) => {
     try {
+
         const session = await stripe.checkout.sessions.create({
             line_items: [
                 {
                     price_data: {
                         currency: 'cad',
                         product_data: {
-                            name: '10 hrs Package',
+                            name: req.body.hours + 'hr' + (req.body.hours === '1'? ' ': 's ') + 'Package',
                         },
-                        unit_amount: 1000,
+                        unit_amount: Number(req.body.cost) * 100,
                     },
                     quantity: 1,
                 },
             ],
             mode: 'payment',
-            success_url: process.env.NODE_ENV === 'development'?  'http://localhost:3000/book/success' : 'http://www.sigmaedu/book/success',
-            cancel_url: process.env.NODE_ENV === 'development'? 'http://localhost:3000/book/cancel' :'http://www.sigmaedu/book/cancel'
+            success_url: process.env.NODE_ENV === 'development'?  'http://localhost:3000/book/success' : 'http://www.sigmaedu.ca/book/success',
+            cancel_url: process.env.NODE_ENV === 'development'? 'http://localhost:3000/book/cancel' :'http://www.sigmaedu.ca/book/cancel'
         });
 
         res.redirect(303, session.url);
