@@ -12,7 +12,7 @@ const session = require('./middlewares/session')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const bookingRouter = require('./routes/book')
+const enrollRouter = require('./routes/enroll')
 
 const globals = require("./middlewares/globals")
 
@@ -42,14 +42,14 @@ app.engine('hbs', exphbs.engine({
   }
 }));
 
-app.use(helmet())
+// app.use(helmet())
 
 app.use(session)
 app.use(globals)
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/book', bookingRouter);
+app.use('/enroll', enrollRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.enable('trust proxy')

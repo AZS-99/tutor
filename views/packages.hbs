@@ -1,0 +1,22 @@
+{{>navbar}}
+
+
+
+<div class="grid-3x1-gap1">
+    {{#each packages}}
+        <div>
+            <form action="/enroll/create-checkout-session" method="POST" class="height-inherit">
+                <fieldset class="flex-TTB-ctr height-inherit">
+                    <legend>{{hours}} hrs package</legend>
+                    <p>{{description}}</p>
+                    <p>{{price}}</p>
+                    <input type="hidden" name="hours" value="{{hours}}"/>
+                    <input type="hidden" name="cost" value="{{price}}">
+                    <button type="submit" id="checkout-button">Enroll</button>
+                </fieldset>
+
+            </form>
+        </div>
+    {{/each}}
+
+</div>

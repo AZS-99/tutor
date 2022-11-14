@@ -6,7 +6,7 @@ module.exports.ensure_admin_authority = (req, res, next) => {
 
 
 module.exports.ensure_log_in = (req, res, next) => {
-    req.session.user? next() : res.redirect('/users/sign_up')
+   req.session.user? next() : res.redirect('/users/sign_up')
 }
 
 

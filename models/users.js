@@ -4,15 +4,18 @@ module.exports = (Sequelise, database) => {
     return database.define('users', {
         forename: {
             type: Sequelise.STRING,
+            allowNull: false,
             validate: {
                 is: {
                     args: ['^[a-z0-9]{2,20}$', 'i'],
                     msg: ['Server rejected forename']
                 }
             }
+
         },
         surname: {
             type: Sequelise.STRING,
+            allowNull: false,
             validate: {
                 is: {
                     args: ['^[a-z0-9]{2,20}$', 'i'],
@@ -23,12 +26,14 @@ module.exports = (Sequelise, database) => {
         email: {
             type: Sequelise.STRING,
             unique: true,
+            allowNull: false,
             validate: {
                 isEmail: true
             }
         },
         password: {
             type: Sequelise.STRING,
+            allowNull: false,
             validate: {
                 is: {
                     args: ['^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9_-]{8,30}$'],

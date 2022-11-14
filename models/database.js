@@ -12,6 +12,7 @@ const students = require('./students')(Sequelise, database);
 const instructors = require('./instructors')(Sequelise, database);
 const appointments = require('./appointments')(Sequelise, database);
 const sessions = require('./sessions')(Sequelise, database);
+const packages = require('./packages')(Sequelise, database);
 
 
 
@@ -90,6 +91,14 @@ module.exports.set_appointment = async (year, month, day, half_hr, count_halves,
             });
         }
     } catch (e) {throw e;}
+}
+
+
+module.exports.get_packages = async () => {
+    return await packages.findAll({
+        raw: true
+    });
+
 }
 
 

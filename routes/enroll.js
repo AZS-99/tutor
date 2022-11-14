@@ -1,5 +1,6 @@
 const express = require('express')
 const database = require('../models/database')
+const {ensure_log_in} = require("../middlewares/access");
 const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-08-01"});
 
 
@@ -28,7 +29,47 @@ const router = express.Router();
 // });
 
 
-router.post('/create-checkout-session', async (req, res) => {
+router.get('/packages', async (req, res) => {
+    const packages = await database.get_packages();
+    res.render("packages", {
+        packages: packages
+    })
+})
+
+
+router.get('/book_trial', ensure_log_in, (req, res) => {
+    res.render("book_trial")
+})
+
+router.post('/book_trial',  async (req, res) => {
+    try {
+        const year = parseInt(req.body.date.substring(0, 4))
+        const month = parseInt(req.body.date.substring(5, 7))
+        const day = parseInt(req.body.date.substring(8))
+        const half_hr = parseInt(req.body.time.substring(0, 2)) * 2 + (parseInt(req.body.time.substring(3)) === 30? 1 : 0);
+        const slots_count = 2
+
+        const unavailable_slots_jsn = await database.get_unavailable_slots(year, month, day, 2);
+        const unavailable_slots = unavailable_slots_jsn.map(jsn => jsn.half_hr);
+
+        for (let i = 0; i < slots_count; ++i) {
+            if (unavailable_slots.includes(half_hr + i)){
+                res.send("Unavailable");
+                return;
+            }
+        }
+
+        await database.set_appointment(year, month, day, half_hr, slots_count, 1);
+        res.send("Success, you'll be contacted within 24 hrs to confirm your session!")
+
+    }catch (e) {
+        console.log(e.message)
+        res.send(e)
+    }
+})
+
+
+router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
     try {
 
         const session = await stripe.checkout.sessions.create({
