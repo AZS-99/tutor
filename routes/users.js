@@ -1,6 +1,6 @@
 const express = require('express');
 const database = require('../models/database')
-const {verify_user, ensure_log_in} = require("../middlewares/access");
+const {verify_user, ensure_log_in, ensure_no_log} = require("../middlewares/access");
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.get('/', (req, res, next) => {
 
 
 
-router.get('/sign_up', (req, res) => {
+router.get('/sign_up', ensure_no_log, (req, res) => {
     res.render('sign_up', {
         title: "Sign up with Sigma!"
     })
@@ -35,7 +35,7 @@ router.post('/sign_up', async (req, res) => {
 });
 
 
-router.get('/log_in',  (req, res) => {
+router.get('/log_in', ensure_no_log, (req, res) => {
     res.render('log_in', {
         title: "Log in to Alpha"
     });
@@ -59,7 +59,7 @@ router.post('/log_in', async (req, res) => {
 });
 
 
-router.get('/log_out', (req, res) => {
+router.get('/log_out', ensure_log_in, (req, res) => {
     req.session.destroy();
     res.redirect('/')
 })
