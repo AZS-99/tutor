@@ -10,8 +10,6 @@ router.get('/', (req, res, next) => {
 });
 
 
-
-
 router.get('/sign_up', ensure_no_log, (req, res) => {
     res.render('sign_up', {
         title: "Sign up with Sigma!"
@@ -23,11 +21,11 @@ router.post('/sign_up', async (req, res) => {
     try {
 
         const user = await database.add_user(req.body);
-        if (req.body.position === "student") await database.add_student(user.id, req.body.grade)
-        else if(req.body.position === "instructor") await database.add_instructor(user.id, 30)
+        if (req.body.position === "STUDENT") await database.add_student(user.id, req.body.grade)
+        else if(req.body.position === "INSTRUCTOR") await database.add_instructor(user.id, 30)
         delete user.password;
         req.session.user = user;
-        res.redirect('..');
+        res.redirect('back');
     } catch (e) {
         console.log("ERROR!!!" + e)
         res.send(e);
@@ -37,7 +35,7 @@ router.post('/sign_up', async (req, res) => {
 
 router.get('/log_in', ensure_no_log, (req, res) => {
     res.render('log_in', {
-        title: "Log in to Alpha"
+        title: "Log in to Sigma"
     });
 });
 
