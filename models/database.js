@@ -15,6 +15,8 @@ const sessions = require('./sessions')(Sequelise, database);
 const packages = require('./packages')(Sequelise, database);
 
 
+let db_transaction;
+
 
 module.exports.initialise = async () => {
     try {await database.sync()}
@@ -22,35 +24,20 @@ module.exports.initialise = async () => {
 }
 
 
-module.exports.add_instructor = async (id, hourly_rate) => {
+
+module.exports.add_user = async (user, position_info) => {
     try {
-        await instructors.create({
-            id: id,
-            hourly_rate: hourly_rate
-        })
-    } catch (e) {
-        throw e;
-    }
-}
-
-
-module.exports.add_student = async (id, grade) => {
-    try {
-        const student = await students.create({
-            id: id,
-            grade: grade
-        })
-    } catch (e) {
-        throw e;
-    }
-}
-
-
-module.exports.add_user = async (user) => {
-    try {
+        db_transaction = await database.transaction()
         user.forename = user.forename.toLowerCase();
         user.surname = user.surname.toLowerCase();
-        const created_user = await users.create(user);
+        const created_user = await users.create(user, {transaction: db_transaction});
+        await students.create({
+            id: created_user.id,
+            grade: position_info.grade
+        }, {
+            transaction: db_transaction
+        })
+        await db_transaction.commit();
         return created_user.get({raw: true})
     } catch (e) {
         throw e;
