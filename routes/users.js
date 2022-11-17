@@ -24,8 +24,7 @@ router.post('/sign_up', async (req, res) => {
 
         delete user.password;
         req.session.user = user;
-        res.send(req.session.user)
-        // res.redirect('back');
+        res.redirect('back');
     } catch (e) {
         console.log("ERROR!!!" + e)
         res.send(e);
