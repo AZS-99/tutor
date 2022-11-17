@@ -21,8 +21,7 @@ router.post('/sign_up', async (req, res) => {
     try {
 
         const user = await database.add_user(req.body);
-        if (req.body.position === "STUDENT") await database.add_student(user.id, req.body.grade)
-        else if(req.body.position === "INSTRUCTOR") await database.add_instructor(user.id, 30)
+
         delete user.password;
         req.session.user = user;
         res.redirect('back');

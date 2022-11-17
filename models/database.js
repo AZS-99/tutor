@@ -25,7 +25,7 @@ module.exports.initialise = async () => {
 
 
 
-module.exports.add_user = async (user, position_info) => {
+module.exports.add_user = async (user) => {
     try {
         db_transaction = await database.transaction()
         user.forename = user.forename.toLowerCase();
@@ -33,7 +33,7 @@ module.exports.add_user = async (user, position_info) => {
         const created_user = await users.create(user, {transaction: db_transaction});
         await students.create({
             id: created_user.id,
-            grade: position_info.grade
+            grade: user.grade
         }, {
             transaction: db_transaction
         })
