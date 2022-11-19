@@ -40,7 +40,9 @@ app.engine('hbs', exphbs.engine({
   }
 }));
 
-app.use(helmet())
+app.use(helmet({
+
+}))
 
 app.use(session)
 app.use(globals)
