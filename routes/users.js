@@ -47,6 +47,7 @@ router.post('/log_in', async (req, res) => {
         if (verified) {
             delete user.password;
             req.session.user = user;
+            console.log("Session:", req.session.user);
             res.redirect('/');
         }
         else
