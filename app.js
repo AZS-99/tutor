@@ -20,8 +20,6 @@ const globals = require("./middlewares/globals")
 const app = express();
 
 
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -42,7 +40,7 @@ app.engine('hbs', exphbs.engine({
   }
 }));
 
-// app.use(helmet())
+app.use(helmet())
 
 app.use(session)
 app.use(globals)
@@ -51,7 +49,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/enroll', enrollRouter);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'development') {
   app.enable('trust proxy')
   app.use(enforce_ssl())
 }
