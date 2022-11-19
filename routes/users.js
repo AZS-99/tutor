@@ -19,12 +19,9 @@ router.get('/sign_up', ensure_no_log, (req, res) => {
 
 router.post('/sign_up', async (req, res) => {
     try {
-
         const user = await database.add_user(req.body);
-
         delete user.password;
         req.session.user = user;
-        console.log("Session:", req.session.user)
         res.redirect('/');
     } catch (e) {
         console.log("ERROR!!!" + e)
