@@ -47,7 +47,7 @@ router.post('/log_in', async (req, res) => {
         if (verified) {
             delete user.password;
             req.session.user = user;
-            res.redirect('back');
+            res.redirect('/');
         }
         else
             res.send("Email-Password combination is not valid")
