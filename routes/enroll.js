@@ -4,6 +4,7 @@ const {ensure_log_in} = require("../middlewares/access");
 const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-08-01"});
 
 
+
 const router = express.Router();
 
 // router.post("/create-payment-intent", async (req, res) => {
@@ -30,10 +31,7 @@ const router = express.Router();
 
 
 router.get('/packages', async (req, res) => {
-    const packages = await database.get_packages();
-    res.render("packages", {
-        packages: packages
-    })
+    res.render("packages");
 })
 
 
@@ -71,7 +69,6 @@ router.post('/book_trial',  async (req, res) => {
 
 router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
     try {
-
         const session = await stripe.checkout.sessions.create({
             line_items: [
                 {
@@ -94,8 +91,10 @@ router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
     } catch (e) {
         console.log(e)
     }
-
 });
+
+
+
 
 
 router.get('/checkout', (req, res) => {

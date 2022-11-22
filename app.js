@@ -36,6 +36,9 @@ app.engine('hbs', exphbs.engine({
   helpers: {
     ternary: (condition, var1, var2) => {
       return condition? var1 : var2;
+    },
+    multiply: (var1, var2) => {
+      return var1 * var2
     }
   }
 }));
