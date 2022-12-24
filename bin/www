@@ -9,7 +9,6 @@ const debug = require('debug')('tutor:server');
 const database = require("../models/database")
 const http = require('http');
 
-const stripe = require('stripe')('sk_test_51M1zZZKgvv1eRC7rBgnByDQdn91Zs2vddghqvN3VjEO88sEVuZPttsXIM4AzWZVzC9tqEWqnWpHKXLAYJ9JIfmvD006mwpuT8W', {apiVersion: "2022-08-01"});
 
 /**
  * Get port from environment and store in Express.

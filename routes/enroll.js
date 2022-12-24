@@ -3,7 +3,7 @@ const database = require('../models/database')
 const {ensure_log_in} = require("../middlewares/access");
 const bodyParser = require("body-parser");
 
-const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-08-01"});
+const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-11-15"});
 
 
 const router = express.Router();
