@@ -110,3 +110,18 @@ module.exports.get_unavailable_slots = async (year, month, day, instructor_id) =
         throw e;
     }
 }
+
+
+module.exports.add_student_hrs = async (id, hrs) => {
+    try {
+        console.log('add hrs triggered')
+        await database.query(`
+        UPDATE students
+        SET hours_credit = hours_credit + ${hrs}
+        WHERE id = ${id}
+    `)
+    } catch (e) {
+        throw e;
+    }
+
+}

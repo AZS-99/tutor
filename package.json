@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "body-parser": "^2.0.0-beta.1",
     "connect-pg-simple": "^7.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
@@ -22,5 +23,8 @@
     "pg": "^8.8.0",
     "sequelize": "^6.23.2",
     "stripe": "^10.17.0"
+  },
+  "devDependencies": {
+    "handlebars": "^4.5.0"
   }
 }

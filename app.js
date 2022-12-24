@@ -28,6 +28,7 @@ app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.json());
+
 app.use(express.urlencoded({ extended: false }));
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.engine('hbs', exphbs.engine({
@@ -39,6 +40,10 @@ app.engine('hbs', exphbs.engine({
     },
     multiply: (var1, var2) => {
       return var1 * var2
+    },
+    get_package_price: (hrs) => {
+      hrs = Number(hrs);
+      return hrs === 1? 40 : Math.round(40 * hrs * (100 - hrs)/100)
     }
   }
 }));

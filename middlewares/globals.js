@@ -8,10 +8,7 @@ globals = (req, res, next) => {
         {"Home": '/', "About": "/", "Booking": '/enroll/packages'},
         {"Log out": "/users/log_out"}
     ];
-    res.locals.packages = [
-        {4: "four hrs"},
-        {6: "six"}
-    ]
+
     next();
 }
 

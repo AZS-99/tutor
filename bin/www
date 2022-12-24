@@ -87,10 +87,7 @@ function onError(error) {
 async function onListening() {
   try {
     await database.initialise();
-    const customer = await stripe.customers.create({
-      email: 'adam.zachary.saher@gmail.com'
-    });
-    console.log("stripe customer id:", customer.id)
+
     const addr = server.address();
     const bind = typeof addr === 'string'
         ? 'pipe ' + addr

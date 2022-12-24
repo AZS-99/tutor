@@ -4,24 +4,22 @@
 
 <div class="grid-3x1-gap1">
     {{#each packages}}
-        {{#each this}}
+
         <div>
             <form action="/enroll/create-checkout-session" method="POST" class="height-inherit">
                 <fieldset class="flex-TTB-ctr height-inherit">
 
                         <legend>{{@key}} hrs package</legend>
                         <p>{{this}}</p>
-                        <p>Price: 10</p>
+                        <p>Price: {{get_package_price @key}}</p>
                         <input type="hidden" name="hours" value="{{@key}}"/>
-                        <input type="hidden" name="cost" value="{{multiply @key 33}}">
                         <button type="submit" id="checkout-button" class="B-xlg btn-luminous-green">Enroll</button>
-
 
                 </fieldset>
 
             </form>
         </div>
-        {{/each}}
+
     {{/each}}
 
 </div>

@@ -1,37 +1,27 @@
 const express = require('express')
 const database = require('../models/database')
 const {ensure_log_in} = require("../middlewares/access");
-const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-08-01"});
+const bodyParser = require("body-parser");
 
+const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-08-01"});
 
 
 const router = express.Router();
 
-// router.post("/create-payment-intent", async (req, res) => {
-//     try {
-//         const { items } = req.body;
-//
-//         // Create a PaymentIntent with the order amount and currency
-//         const paymentIntent = await stripe.paymentIntents.create({
-//             amount: 10,
-//             currency: "cad",
-//             automatic_payment_methods: {
-//                 enabled: true
-//             }
-//         });
-//
-//         res.send({
-//             clientSecret: paymentIntent.client_secret
-//         });
-//     } catch (e) {
-//         console.log(e)
-//     }
-//
-// });
+
+
+
 
 
 router.get('/packages', async (req, res) => {
-    res.render("packages");
+    res.render("packages" , {
+        packages: {
+            1: "Booking one hour at a time is best for those who have a hectic schedule which changes frequently",
+            5: "The 5 hrs package is ideal for pupils who have a good grasp of coding, and need at least one weekly hour to brush" +
+                " on their knowledge and to exercise, or those who would like to save 5% instead of 5 individual hours",
+            10: "For beginners who need at least two hours a week, or those who would like to save 10%"
+        }
+    });
 })
 
 
@@ -69,6 +59,7 @@ router.post('/book_trial',  async (req, res) => {
 
 router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
     try {
+        const hrs = Number(req.body.hours)
         const session = await stripe.checkout.sessions.create({
             line_items: [
                 {
@@ -77,14 +68,15 @@ router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
                         product_data: {
                             name: req.body.hours + 'hr' + (req.body.hours === '1'? ' ': 's ') + 'Package',
                         },
-                        unit_amount: Number(req.body.cost) * 100,
+                        unit_amount:  hrs === 1? 4000 : 4000 * (100 - hrs)/100,
                     },
-                    quantity: 1,
+                    quantity: hrs,
                 },
             ],
+            customer_email: req.session.user.email,
             mode: 'payment',
-            success_url: process.env.NODE_ENV === 'development'?  'http://localhost:3000/book/success' : 'http://www.sigmaedu.ca/book/success',
-            cancel_url: process.env.NODE_ENV === 'development'? 'http://localhost:3000/book/cancel' :'http://www.sigmaedu.ca/book/cancel'
+            success_url: process.env.NODE_ENV === 'development'?  'http://localhost:3000/enroll/success' : 'http://www.sigmaedu.ca/enroll/success',
+            cancel_url: process.env.NODE_ENV === 'development'? 'http://localhost:3000/enroll/cancel' :'http://www.sigmaedu.ca/enroll/cancel'
         });
 
         res.redirect(303, session.url);
@@ -92,6 +84,38 @@ router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
         console.log(e)
     }
 });
+
+
+router.post('/webhook', async (req, res) => {
+    const endpoint_secret = process.env.STRIPE_ENDPOINT;
+    const event = req.body;
+
+    switch (event.type) {
+        case 'checkout.session.completed':
+            console.log("checkout completed:", event);
+            const id = event.data.object.id;
+            const session = await stripe.checkout.sessions.retrieve(id, {expand: ["line_items"]});
+            const quantity = session.line_items.data[0].quantity;
+            const email = event.data.object.customer_email;
+            const user = await database.get_user("email", email);
+            if (event.data.object.payment_status === 'paid') await database.add_student_hrs(user.id, quantity);
+            break;
+
+        case 'charge.succeeded':
+            console.log("charge:", event);
+            break;
+
+        case 'payment_intent.succeeded':
+            console.log('payment success:', event);
+            break;
+
+        default:
+            console.log(`Unhandled event type ${event.type}`);
+    }
+
+});
+
+
 
 
 
