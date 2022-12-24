@@ -9,10 +9,6 @@ const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-11-1
 const router = express.Router();
 
 
-
-
-
-
 router.get('/packages', async (req, res) => {
     res.render("packages" , {
         packages: {
@@ -68,7 +64,7 @@ router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
                         product_data: {
                             name: req.body.hours + 'hr' + (req.body.hours === '1'? ' ': 's ') + 'Package',
                         },
-                        unit_amount:  hrs === 1? 4000 : 4000 * (100 - hrs)/100,
+                        unit_amount:  hrs === 1? 100 : 4000 * (100 - hrs)/100,
                     },
                     quantity: hrs,
                 },
