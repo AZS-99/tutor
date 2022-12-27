@@ -2,7 +2,7 @@ const express = require('express')
 const database = require('../models/database')
 const {ensure_log_in} = require("../middlewares/access");
 
-const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-11-15"});
+const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-08-01"});
 const endpoint_secret = process.env.WEBHOOK_ENDPOINT;
 
 
@@ -82,23 +82,24 @@ router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
 });
 
 
-router.post('/webhook',  async (req, res) => {
+router.post('/webhook',  express.raw({type: 'application/json'}), async (req, res) => {
     const sig = req.headers['stripe-signature'];
+    console.log("sig", sig);
 
     let event;
 
-    try {
-        event = await stripe.webhooks.constructEvent(req.body, sig, endpoint_secret);
-        console.log("EVENT:", event);
 
+
+    try {
+        event = stripe.webhooks.constructEvent(req.body, sig, endpoint_secret);
+        console.log(event);
     }
     catch (err) {
-        res.status(400).send(`Webhook Error: ${err.message}`);
+        res.send("ERROR:" + err.message);
     }
 
     switch (event.type) {
         case 'checkout.session.completed':
-            console.log("checkout completed:", event);
             const id = event.data.object.id;
             const session = await stripe.checkout.sessions.retrieve(id, {expand: ["line_items"]});
             const quantity = session.line_items.data[0].quantity;
@@ -108,18 +109,16 @@ router.post('/webhook',  async (req, res) => {
             break;
 
         case 'charge.succeeded':
-            console.log("charge:", event);
             break;
 
         case 'payment_intent.succeeded':
-            console.log('payment success:', event);
             break;
 
         default:
             console.log(`Unhandled event type ${event.type}`);
     }
 
-
+    res.send();
 });
 
 

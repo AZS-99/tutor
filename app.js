@@ -27,7 +27,10 @@ app.set('view engine', 'hbs');
 
 
 app.use(logger('dev'));
-app.use(express.json());
+app.use((req, res, next) => {
+  if (req.originalUrl !== '/enroll/webhook') express.json();
+  next();
+});
 
 app.use(express.urlencoded({ extended: false }));
 app.use('/public', express.static(path.join(__dirname, 'public')));
