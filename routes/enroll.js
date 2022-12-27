@@ -1,9 +1,9 @@
 const express = require('express')
 const database = require('../models/database')
 const {ensure_log_in} = require("../middlewares/access");
-const bodyParser = require("body-parser");
 
 const stripe = require('stripe')(process.env.STRIPE_KEY, {apiVersion: "2022-11-15"});
+const endpoint_secret = process.env.WEBHOOK_ENDPOINT;
 
 
 const router = express.Router();
@@ -71,8 +71,8 @@ router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
             ],
             customer_email: req.session.user.email,
             mode: 'payment',
-            success_url: process.env.NODE_ENV === 'development'?  'http://localhost:3000/enroll/success' : 'http://www.sigmaedu.ca/enroll/success',
-            cancel_url: process.env.NODE_ENV === 'development'? 'http://localhost:3000/enroll/cancel' :'http://www.sigmaedu.ca/enroll/cancel'
+            success_url: process.env.NODE_ENV === 'development'?  'http://localhost:3000/enroll/success' : 'https://www.sigmaedu.ca/enroll/success',
+            cancel_url: process.env.NODE_ENV === 'development'? 'http://localhost:3000/enroll/cancel' :'https://www.sigmaedu.ca/enroll/cancel'
         });
 
         res.redirect(303, session.url);
@@ -82,9 +82,19 @@ router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
 });
 
 
-router.post('/webhook', async (req, res) => {
-    const endpoint_secret = process.env.STRIPE_ENDPOINT;
-    const event = req.body;
+router.post('/webhook',  async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+
+    let event;
+
+    try {
+        event = await stripe.webhooks.constructEvent(req.body, sig, endpoint_secret);
+        console.log("EVENT:", event);
+
+    }
+    catch (err) {
+        res.status(400).send(`Webhook Error: ${err.message}`);
+    }
 
     switch (event.type) {
         case 'checkout.session.completed':
@@ -108,6 +118,7 @@ router.post('/webhook', async (req, res) => {
         default:
             console.log(`Unhandled event type ${event.type}`);
     }
+
 
 });
 
