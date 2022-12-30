@@ -123,5 +123,14 @@ module.exports.add_student_hrs = async (id, hrs) => {
     } catch (e) {
         throw e;
     }
+}
 
+
+module.exports.get_student_info = async (id) => {
+    return await database.query(`
+        SELECT * FROM students WHERE id = ${id}
+    `, {
+        raw: true,
+        plain: true
+    })
 }

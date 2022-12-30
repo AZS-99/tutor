@@ -6,7 +6,7 @@ globals = (req, res, next) => {
     ];
     res.locals.logged_nav_lsts = [
         {"Home": '/', "About": "/", "Booking": '/enroll/packages'},
-        {"Log out": "/users/log_out"}
+        {"My Account": "/users/account", "Log out": "/users/log_out"}
     ];
 
     next();

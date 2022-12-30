@@ -10,6 +10,14 @@ router.get('/', (req, res, next) => {
 });
 
 
+router.get('/account', ensure_log_in, async (req, res) => {
+    console.log(await database.get_student_info(req.session.user.id))
+    res.render('account', {
+        student_info: await database.get_student_info(req.session.user.id)
+    });
+})
+
+
 router.get('/sign_up', ensure_no_log, (req, res) => {
     res.render('sign_up', {
         title: "Sign up with Sigma!"
