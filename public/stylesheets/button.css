@@ -1,0 +1,78 @@
+button {
+    border: none;
+}
+
+*.btn-luminous {
+    color: white;
+    text-decoration: none;
+    background-color: white;
+    box-shadow: 0 0 40px 40px var(--theme-colour) inset, 0 0 0 0 var(--theme-colour);
+    transition: all 150ms ease-in-out;
+}
+
+*.btn-luminous:hover {
+    box-shadow: 0 0 10px 0 var(--theme-colour) inset, 0 0 10px 4px var(--theme-colour);
+    color: var(--theme-colour);
+    border-color: var(--theme-colour);
+}
+
+
+*.btn-luminous-blue {
+    color: white;
+    text-decoration: none;
+    background-color: white;
+    box-shadow: 0 0 40px 40px #0275d8 inset, 0 0 0 0 #0275d8;
+    transition: all 150ms ease-in-out;
+}
+
+*.btn-luminous-blue:hover {
+    box-shadow: 0 0 10px 0 #0275d8 inset, 0 0 10px 4px #0275d8;
+    color: #0275d8;
+    border-color: #0275d8;
+}
+
+
+
+*.btn-luminous-green {
+    color: white;
+    text-decoration: none;
+    background-color: white;
+    box-shadow: 0 0 40px 40px #5cb85c inset, 0 0 0 0 #5cb85c;
+    transition: all 150ms ease-in-out;
+}
+
+*.btn-luminous-green:hover {
+    box-shadow: 0 0 10px 0 #5cb85c inset, 0 0 10px 4px #5cb85c;
+    color: limegreen;
+    border-color: limegreen;
+}
+
+
+*.btn-luminous-red {
+    color: white;
+    text-decoration: none;
+    background-color: white;
+    box-shadow: 0 0 40px 40px red inset, 0 0 0 0 red;
+    transition: all 150ms ease-in-out;
+}
+
+*.btn-luminous-red:hover {
+    box-shadow: 0 0 10px 0 red inset, 0 0 10px 4px red;
+    color: red;
+    border-color: red;
+}
+
+
+*.btn-luminous-yellow {
+    color: black;
+    text-decoration: none;
+    background-color: white;
+    box-shadow: 0 0 40px 40px yellow inset, 0 0 0 0 yellow;
+    transition: all 150ms ease-in-out;
+}
+
+*.btn-luminous-yellow:hover {
+    box-shadow: 0 0 10px 0 yellow inset, 0 0 10px 4px yellow;
+    color: black;
+    border-color: yellow;
+}
