@@ -84,15 +84,11 @@ router.post('/create-checkout-session', ensure_log_in, async (req, res) => {
 
 router.post('/webhook',  express.raw({type: 'application/json'}), async (req, res) => {
     const sig = req.headers['stripe-signature'];
-    console.log("sig", sig);
 
     let event;
 
-
-
     try {
         event = stripe.webhooks.constructEvent(req.body, sig, endpoint_secret);
-        console.log(event);
     }
     catch (err) {
         res.send("ERROR:" + err.message);
@@ -105,7 +101,7 @@ router.post('/webhook',  express.raw({type: 'application/json'}), async (req, re
             const quantity = session.line_items.data[0].quantity;
             const email = event.data.object.customer_email;
             const user = await database.get_user("email", email);
-            if (event.data.object.payment_status === 'paid') await database.add_student_hrs(user.id, quantity);
+            if (event.data.object.payment_status === 'paid') await database.add_student_hrs(user.id, quantity * 2);
             break;
 
         case 'charge.succeeded':

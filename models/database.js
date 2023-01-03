@@ -64,16 +64,16 @@ module.exports.get_user = async (field, value) => {
 
 
 
-module.exports.set_appointment = async (year, month, day, half_hr, count_halves, student_id) => {
+module.exports.set_appointment = async (year, month, day, half_hr, half_hrs_count, student_id, instructor_id) => {
     try {
-        for (let i = 0; i < count_halves; ++i) {
+        for (let i = 0; i < half_hrs_count; ++i) {
             await appointments.create({
                 year: year,
                 month: month,
                 day: day,
                 half_hr: half_hr + i,
                 student_id: student_id,
-                instructor_id: 2,
+                instructor_id: instructor_id,
                 status: "PENDING"
             });
         }
@@ -114,10 +114,9 @@ module.exports.get_unavailable_slots = async (year, month, day, instructor_id) =
 
 module.exports.add_student_hrs = async (id, hrs) => {
     try {
-        console.log('add hrs triggered')
         await database.query(`
         UPDATE students
-        SET hours_credit = hours_credit + ${hrs}
+        SET half_hrs_credit = half_hrs_credit + ${hrs}
         WHERE id = ${id}
     `)
     } catch (e) {

@@ -5,11 +5,19 @@
         <span>{{session.user.forename}} {{session.user.surname}}</span>
 
         <span>Credited hours</span>
-        <span>{{student_info.hours_credit}}</span>
+        <span>{{student_info.hrs_credit}}</span>
 
         <span>Request a session</span>
         <form method="POST" action="/users/request_slot" class="flex gap-half">
-            <input type="datetime-local" name="slot" step="1800">
+            <div>
+                <label>Slot</label>
+                <input type="datetime-local" name="slot" step="1800">
+            </div>
+            <div>
+                <label>Duration in mins</label>
+                <input type="number" step="30" name="duration_mins" value="60" min="60" max="120"/>
+            </div>
+
             <button class="btn-luminous-blue">Request</button>
         </form>
 
