@@ -66,6 +66,7 @@ module.exports.get_user = async (field, value) => {
 
 module.exports.set_appointment = async (year, month, day, half_hr, half_hrs_count, student_id, instructor_id) => {
     try {
+        db_transaction = await database.transaction();
         for (let i = 0; i < half_hrs_count; ++i) {
             await appointments.create({
                 year: year,
@@ -75,8 +76,11 @@ module.exports.set_appointment = async (year, month, day, half_hr, half_hrs_coun
                 student_id: student_id,
                 instructor_id: instructor_id,
                 status: "PENDING"
+            }, {
+                transaction: db_transaction
             });
         }
+        await db_transaction.commit();
     } catch (e) {throw e;}
 }
 
@@ -91,21 +95,17 @@ module.exports.get_packages = async () => {
 
 module.exports.get_unavailable_slots = async (year, month, day, instructor_id) => {
     try {
-        return await database.query(`
-            SELECT half_hr
-            FROM appointments
-            WHERE appointments.year = :year AND appointments.month = :month AND appointments.day = :day 
-              AND appointments.instructor_id = :instructor_id`
-        ,{
-            replacements: {
+        const slots = await appointments.findAll({
+            attributes: ['half_hr'],
+            where: {
                 year: year,
                 month: month,
                 day: day,
                 instructor_id: instructor_id
             },
-                type: QueryTypes.SELECT,
-                raw: true
+            raw: true
         })
+        return slots.map(slot => slot.half_hr);
     } catch (e) {
         throw e;
     }
@@ -133,3 +133,4 @@ module.exports.get_student_info = async (id) => {
         plain: true
     })
 }
+
