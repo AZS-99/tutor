@@ -135,17 +135,19 @@ module.exports.get_student_info = async (id) => {
 }
 
 
+
 module.exports.get_student_appointments = async (id, future=true) => {
     const today = new Date();
     const today_str = today.toISOString();
     const year = today_str.slice(0, 4);
     const month = today_str.slice(5, 7);
     const day = today_str.slice(8, 10);
-
+    //The following code assumes every student will have one solid slot per day. Use LAG/LEAD in psql for general case
     const appointments = await database.query(`
-        SELECT year, month, day, half_hr
+        SELECT instructor_id, year, month, day, MIN(half_hr) as start_time, COUNT(*) AS count_halves
         FROM appointments
         WHERE student_id = ${id} AND year >= ${year} AND month >= ${month} AND day >= ${day}
+        GROUP BY instructor_id, year, month, day
     `, {
         raw: true,
         type: Sequelise.QueryTypes.SELECT

@@ -98,8 +98,4 @@ router.post('/unavailable_slots', express.json({type: 'application/json'}), asyn
     }
 })
 
-
-
-
-
 module.exports = router;

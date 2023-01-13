@@ -38,16 +38,22 @@ app.engine('hbs', exphbs.engine({
   extname: 'hbs',
   defaultLayout: 'main',
   helpers: {
+    equals: (var1, var2) => {
+      return var1 === var2;
+    },
+    not_equal: (var1, var2) => {
+      return var1 !== var2
+    },
     ternary: (condition, var1, var2) => {
       return condition? var1 : var2;
     },
     multiply: (var1, var2) => {
       return var1 * var2
     },
-    divide: (var1, var2) => {
+    div: (var1, var2) => {
       return var1 / var2;
     },
-    int_divide: (var1, var2) => {
+    int_div: (var1, var2) => {
       return Math.floor(var1/var2);
     },
     modulo: (var1, var2) => {

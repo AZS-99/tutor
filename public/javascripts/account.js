@@ -44,8 +44,6 @@ document.addEventListener("DOMContentLoaded", evt => {
 
 
             const booked_halves_array = await response.json();
-            console.log("user input:", evt.target.value);
-            console.log("booked halves", booked_halves_array);
 
 
             for (let i = 0; i < halves_count; ++i) {
@@ -53,7 +51,6 @@ document.addEventListener("DOMContentLoaded", evt => {
                     slot_is_available = false;
                     break;
                 }
-                console.log(first_half_hr + i, " not in ", booked_halves_array);
             }
 
             availability_span.textContent = (slot_is_available? "\u2713" : "\u2718")
