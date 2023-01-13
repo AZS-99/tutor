@@ -44,6 +44,15 @@ app.engine('hbs', exphbs.engine({
     multiply: (var1, var2) => {
       return var1 * var2
     },
+    divide: (var1, var2) => {
+      return var1 / var2;
+    },
+    int_divide: (var1, var2) => {
+      return Math.floor(var1/var2);
+    },
+    modulo: (var1, var2) => {
+      return var1 % var2;
+    },
     get_package_price: (hrs) => {
       hrs = Number(hrs);
       return hrs === 1? 40 : Math.round(40 * hrs * (100 - hrs)/100)

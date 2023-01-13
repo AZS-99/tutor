@@ -18,7 +18,8 @@ router.get('/account', ensure_log_in, async (req, res) => {
     const taken_slots = await database.get_unavailable_slots(2023, 1, 6, 1);
     console.log(taken_slots)
     res.render('account', {
-        student_info: student_info
+        student_info: student_info,
+        appointments: await database.get_student_appointments(req.session.user.id)
     });
 });
 
@@ -96,5 +97,9 @@ router.post('/unavailable_slots', express.json({type: 'application/json'}), asyn
         console.log(e.message);
     }
 })
+
+
+
+
 
 module.exports = router;

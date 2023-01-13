@@ -22,6 +22,33 @@
             <span id="availability" class="txt-red B-xlg"></span>
         </form>
 
+        <table>
+            <thead>
+            <tr>
+                <th>year</th>
+                <th>month</th>
+                <th>day</th>
+                <th>Beginning</th>
+            </tr>
+            </thead>
+
+
+            <tbody>
+            {{#each appointments}}
+
+                <tr class="txt-align-ctr">
+                    <td>{{year}}</td>
+                    <td>{{month}}</td>
+                    <td>{{day}}</td>
+                    <td>{{int_divide half_hr 2}}:00</td>
+                </tr>
+
+            {{/each}}
+            </tbody>
+
+
+        </table>
+
     </div>
 
 <script src="/public/javascripts/account.js"></script>

@@ -134,3 +134,23 @@ module.exports.get_student_info = async (id) => {
     })
 }
 
+
+module.exports.get_student_appointments = async (id, future=true) => {
+    const today = new Date();
+    const today_str = today.toISOString();
+    const year = today_str.slice(0, 4);
+    const month = today_str.slice(5, 7);
+    const day = today_str.slice(8, 10);
+
+    const appointments = await database.query(`
+        SELECT year, month, day, half_hr
+        FROM appointments
+        WHERE student_id = ${id} AND year >= ${year} AND month >= ${month} AND day >= ${day}
+    `, {
+        raw: true,
+        type: Sequelise.QueryTypes.SELECT
+    })
+    console.log(appointments);
+    return appointments;
+}
+

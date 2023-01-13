@@ -67,6 +67,11 @@ input:invalid+span:after {
 
 }
 
+
+*.txt-align-ctr {
+  text-align: center;
+}
+
 /*input:valid+span:after {*/
 /*  content: '✓';*/
 /*  color: forestgreen;*/
