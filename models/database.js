@@ -144,10 +144,16 @@ module.exports.get_student_appointments = async (id, future=true) => {
     const day = today_str.slice(8, 10);
     //The following code assumes every student will have one solid slot per day. Use LAG/LEAD in psql for general case
     const appointments = await database.query(`
-        SELECT instructor_id, year, month, day, MIN(half_hr) as start_time, COUNT(*) AS count_halves
-        FROM appointments
+        WITH cte as (
+            SELECT student_id, instructor_id, year, month, day, half_hr, 
+                    half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, year, month, day ORDER BY half_hr) as grp
+            FROM appointments
+        )
+        
+        SELECT instructor_id, year, month, day, MIN(half_hr) as start_time, COUNT(half_hr) AS count_halves
+        FROM cte
         WHERE student_id = ${id} AND year >= ${year} AND month >= ${month} AND day >= ${day}
-        GROUP BY instructor_id, year, month, day
+        GROUP BY instructor_id, year, month, day, grp
         ORDER BY year, month, day
     `, {
         raw: true,
