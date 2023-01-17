@@ -15,13 +15,32 @@ router.get('/account', ensure_log_in, async (req, res) => {
     student_info.hrs_credit = Number(student_info.half_hrs_credit) / 2;
     delete student_info.half_hrs_credit;
 
+    let tomorrow = new Date();
+    let next_month = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    next_month.setDate(tomorrow.getDate() + 30);
+
+
+    let tomorrow_str =  tomorrow.toISOString().slice(0, 11);
+    let next_month_str = next_month.toISOString().slice(0, 11);
+    tomorrow_str += "17:00";
+    next_month_str += "17:00";
+    console.log(tomorrow_str, next_month_str);
+
     const taken_slots = await database.get_unavailable_slots(2023, 1, 6, 1);
-    console.log(taken_slots)
     res.render('account', {
         student_info: student_info,
-        appointments: await database.get_student_appointments(req.session.user.id)
+        appointments: await database.get_student_appointments(req.session.user.id),
+        datetime_min: tomorrow_str,
+        datetime_max: next_month_str
     });
 });
+
+
+router.post('/cancel_session', ensure_log_in, async (req, res) => {
+    await database.cancel_slot(req.session.user.id, req.body.year, req.body.month, req.body.day, req.body.start_time, req.body.count);
+    res.redirect('/users/account')
+})
 
 
 router.post('/request_slot', ensure_log_in, async (req, res) => {

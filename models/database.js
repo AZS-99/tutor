@@ -148,11 +148,35 @@ module.exports.get_student_appointments = async (id, future=true) => {
         FROM appointments
         WHERE student_id = ${id} AND year >= ${year} AND month >= ${month} AND day >= ${day}
         GROUP BY instructor_id, year, month, day
+        ORDER BY year, month, day
     `, {
         raw: true,
         type: Sequelise.QueryTypes.SELECT
     })
     console.log(appointments);
     return appointments;
+}
+
+
+module.exports.cancel_slot = async (id, year, month, day, start_half_hr, count_halves) => {
+    db_transaction = await database.transaction();
+    for (let i = 0; i < count_halves; ++i) {
+        await database.query(`
+            DELETE FROM appointments
+            WHERE student_id = ${id} AND year = ${year} AND month = ${month} AND half_hr = ${start_half_hr} + ${i}
+        `, {
+            transaction: db_transaction
+        });
+    }
+
+    await database.query(`
+        UPDATE students
+        SET half_hrs_credit = half_hrs_credit + ${count_halves}
+        WHERE id = ${id}
+    `, {
+        transaction: db_transaction
+    });
+
+    await db_transaction.commit();
 }
 
