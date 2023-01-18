@@ -146,7 +146,7 @@ module.exports.get_student_appointments = async (id, future=true) => {
     const appointments = await database.query(`
         WITH cte as (
             SELECT student_id, instructor_id, year, month, day, half_hr, 
-                    half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, year, month, day ORDER BY half_hr) as grp
+                half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) as grp
             FROM appointments
         )
         
