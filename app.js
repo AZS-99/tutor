@@ -38,6 +38,9 @@ app.engine('hbs', exphbs.engine({
   extname: 'hbs',
   defaultLayout: 'main',
   helpers: {
+    capitalise: (str) => {
+      return str[0].toUpperCase() + str.substr(1);
+    },
     equals: (var1, var2) => {
       return var1 === var2;
     },

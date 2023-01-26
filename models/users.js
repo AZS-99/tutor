@@ -36,7 +36,7 @@ module.exports = (Sequelise, database) => {
             allowNull: false,
             validate: {
                 is: {
-                    args: ['^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9_-]{8,30}$'],
+                    args: ['^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z0-9_@./#&+-]{8,30}$'],
                     msg: ['Server rejected password']
                 }
             }

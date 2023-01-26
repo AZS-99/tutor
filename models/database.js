@@ -3,7 +3,6 @@ const Sequelise = require('sequelize')
 const { QueryTypes } = require ('sequelize')
 const pg = require('pg')
 pg.defaults.ssl = process.env.NODE_ENV === 'production'? { rejectUnauthorized: false } : false;
-//create extension btree_gist, intarray, pg_trgm
 
 const database = new Sequelise(process.env.DATABASE_URL)
 
@@ -27,16 +26,28 @@ module.exports.initialise = async () => {
 
 module.exports.add_user = async (user) => {
     try {
+        console.log(user);
         db_transaction = await database.transaction()
         user.forename = user.forename.toLowerCase();
         user.surname = user.surname.toLowerCase();
         const created_user = await users.create(user, {transaction: db_transaction});
-        await students.create({
-            id: created_user.id,
-            grade: user.grade
-        }, {
-            transaction: db_transaction
-        })
+
+        if (user.position === 'STUDENT') {
+            await students.create({
+                id: created_user.id,
+                grade: user.grade
+            }, {
+                transaction: db_transaction
+            })
+        } else if (user.position === 'INSTRUCTOR') {
+            await instructors.create({
+                id: created_user.id,
+                hourly_rate: 20
+            }, {
+                transaction: db_transaction
+            })
+        }
+
         await db_transaction.commit();
         return created_user.get({raw: true})
     } catch (e) {
@@ -48,17 +59,33 @@ module.exports.add_user = async (user) => {
 module.exports.get_user = async (field, value) => {
     try {
         return await database.query(`
-                    SELECT *
-                    FROM users     
-                    WHERE users.${field} = :value`
+                    SELECT id, INITCAP(forename) as forename, INITCAP(surname) as surname, email, password, position  
+                    FROM users
+                    WHERE ${field} = :value`
             ,{
                 replacements: {
                     value: value
                 },
                 type: QueryTypes.SELECT,
                 plain: true
-            })
+            });
     } catch (error) { throw error }
+}
+
+
+module.exports.get_instructors = async () => {
+    try {
+        return await database.query(`
+            SELECT instructors.id as instructor_id, INITCAP(users.forename) as forename, 
+                INITCAP(users.surname) as surname, instructors.hourly_rate
+            FROM instructors LEFT JOIN users ON users.id = instructors.id
+        `, {
+            type: QueryTypes.SELECT,
+            raw: true
+        });
+    } catch (e) {
+        throw e
+    }
 }
 
 
@@ -125,42 +152,79 @@ module.exports.add_student_hrs = async (id, hrs) => {
 }
 
 
-module.exports.get_student_info = async (id) => {
-    return await database.query(`
-        SELECT * FROM students WHERE id = ${id}
+module.exports.get_user_info = async (user) => {
+    try {
+        const table = user.position.toLowerCase() + 's';
+        return await database.query(`
+        SELECT * FROM ${table} WHERE id = :id
     `, {
-        raw: true,
-        plain: true
-    })
+            replacements: {id: user.id},
+            type: QueryTypes.SELECT,
+            raw: true,
+            plain: true
+        })
+    } catch (e) {
+        throw e;
+    }
+
 }
 
 
 
-module.exports.get_student_appointments = async (id, future=true) => {
+module.exports.get_appointments = async (user, future=true) => {
     const today = new Date();
     const today_str = today.toISOString();
     const year = today_str.slice(0, 4);
     const month = today_str.slice(5, 7);
     const day = today_str.slice(8, 10);
-    //The following code assumes every student will have one solid slot per day. Use LAG/LEAD in psql for general case
-    const appointments = await database.query(`
-        WITH cte as (
-            SELECT student_id, instructor_id, year, month, day, half_hr, 
-                half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) as grp
-            FROM appointments
-        )
-        
-        SELECT instructor_id, year, month, day, MIN(half_hr) as start_time, COUNT(half_hr) AS count_halves
-        FROM cte
-        WHERE student_id = ${id} AND year >= ${year} AND month >= ${month} AND day >= ${day}
-        GROUP BY instructor_id, year, month, day, grp
-        ORDER BY year, month, day
-    `, {
-        raw: true,
-        type: Sequelise.QueryTypes.SELECT
-    })
-    console.log(appointments);
-    return appointments;
+
+    const is_student = user.position === "STUDENT"
+    let all_appointments;
+
+    if (is_student) {
+        all_appointments = await database.query(`
+                WITH cte as (
+                    SELECT student_id, instructor_id, year, month, day, half_hr, 
+                        half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) as grp
+                    FROM appointments
+                )
+                
+               
+                SELECT instructor_id, INITCAP(users.forename) as forename, INITCAP(users.surname) as surname, year, 
+                    month, day, MIN(half_hr) as start_time, COUNT(half_hr) AS count_halves
+                FROM cte LEFT JOIN users ON instructor_id = users.id
+                WHERE student_id = :user_id AND year >= ${year} AND month >= ${month} AND day >= ${day}
+                GROUP BY instructor_id, users.forename, users.surname, year, month, day, grp
+                ORDER BY year, month, day
+        `, {
+            replacements: {user_id: user.id},
+            type: QueryTypes.SELECT,
+            raw: true
+        })
+    } else {
+        all_appointments = await database.query(`
+                WITH cte as (
+                    SELECT student_id, instructor_id, year, month, day, half_hr, 
+                        half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) as grp
+                    FROM appointments
+                )
+                
+                
+                SELECT student_id, INITCAP(users.forename) as forename, INITCAP(users.surname) as surname, year, month, 
+                    day, MIN(half_hr) as start_time, COUNT(half_hr) AS count_halves
+                FROM cte LEFT JOIN users on student_id = users.id
+                WHERE instructor_id = :user_id AND year >= ${year} AND month >= ${month} AND day >= ${day}
+                GROUP BY student_id, users.forename, users.surname, year, month, day, grp
+                ORDER BY year, month, day
+        `, {
+            replacements: {user_id: user.id},
+            type: QueryTypes.SELECT,
+            raw: true
+        })
+    }
+
+
+    return all_appointments;
 }
 
 

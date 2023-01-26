@@ -37,15 +37,15 @@
     width: 100vw;
 }
 
-*.width-inherit {
+*.w-inherit {
     width: 100%;
 }
 
-*.height-inherit {
+*.h-inherit {
     height: 100%;
 }
 
-*.height-width-inherit {
+*.h-w-inherit {
     height: 100%;
     width: 100%;
 }

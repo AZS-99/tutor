@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", evt => {
 
     const form = document.getElementById('book_slot_form');
+    const instructor_select = document.getElementById('instructor_select');
     const btn = document.querySelector("form > button")
     const cancel_session_btns = document.querySelectorAll("td > form > button");
 
@@ -38,7 +39,7 @@ document.addEventListener("DOMContentLoaded", evt => {
                 headers: {
                     'Content-type': 'application/json'
                 },
-                body: JSON.stringify({year: year, month: month, day: day, instructor_id: 1})
+                body: JSON.stringify({year: year, month: month, day: day, instructor_id: instructor_select.value})
             });
 
             const booked_halves_array = await response.json();
@@ -51,10 +52,10 @@ document.addEventListener("DOMContentLoaded", evt => {
             }
 
             if (slot_is_available) {
-                availability_span.textContent = "\u2713"
+                availability_span.textContent = "Slot available \u2713"
                 availability_span.classList = "B-xlg txt-green"
             } else {
-                availability_span.textContent = "\u2718"
+                availability_span.textContent = "Slot unavailable \u2718"
                 availability_span.classList = "B-xlg txt-red"
             }
         } catch (error) {

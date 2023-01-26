@@ -1,7 +1,7 @@
 module.exports = (Sequelize, database) => {
     return database.define("students", {
         id: {
-            type: "INT REFERENCES users(id)",
+            type: "INT REFERENCES users(id) ON DELETE CASCADE",
             primaryKey: true
         },
         grade: "INT CHECK(grade BETWEEN 1 AND 12)",

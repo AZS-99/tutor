@@ -1,7 +1,7 @@
-<nav class="width-inherit flex-repel inner-shadow">
+<nav class="w-inherit flex-repel inner-shadow">
 
     {{#each (ternary session.user logged_nav_lsts nav_lsts)}}
-        <ul class="flex-spread height-inherit">
+        <ul class="flex-spread h-inherit">
             {{#each this}}
                 <li class="p-half">
                     <a href="{{this}}">{{@key}}</a>
