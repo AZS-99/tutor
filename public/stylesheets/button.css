@@ -87,14 +87,14 @@ button {
     border: 1px solid green;
     backdrop-filter: blur(10px);
     transform: skewX(-10deg);
-    height: 50px;
-    width: 200px;
+    height: 75px;
+    width: 300px;
     border-radius: 20px 5px 20px 0px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    font: 15px sans-serif;
+    font: 22px sans-serif;
     font-weight: 300;
     text-shadow: 0 0 20px #fff;
     text-transform: uppercase;
@@ -107,7 +107,7 @@ button {
     content: "";
     display: block;
     width: calc(100% - 22px);
-    height: calc(50px - 8px);
+    height: calc(75px - 10px);
     -webkit-animation: breath 2s infinite alternate;
     animation: breath 2s infinite alternate;
     left: 10px;
