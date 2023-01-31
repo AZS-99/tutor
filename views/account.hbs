@@ -6,15 +6,17 @@
                 <td>Name</td>
                 <td>{{session.user.forename}} {{session.user.surname}}</td>
             </tr>
+            <tr></tr>
             <tr>
                 {{#if (equals session.user.position 'STUDENT')}}
                     <td>Credited Hours</td>
-                    <td>{{div info.half_hrs_credit 2}}</td>
+                    <td class="flex-RTL">{{div info.half_hrs_credit 2}}</td>
                 {{else if (equals session.user.position 'INSTRUCTOR')}}
                     <td>Hourly Rate</td>
-                    <td>{{info.hourly_rate}}</td>
+                    <td class="flex-RTL">{{info.hourly_rate}}</td>
                 {{/if}}
             </tr>
+            <tr></tr>
         </tbody>
 
 
@@ -47,9 +49,8 @@
                     </select>
 
                     <span id="availability" class="txt-red B-xlg"></span>
-                    <div class="flex-ctr m1">
-                        <button class="btn-luminous-blue">Request</button>
-                    </div>
+                    <div class="flex-spread"><button class="btn-luminous-blue">Request</button></div>
+
                 </div>
 
             </fieldset>

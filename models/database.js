@@ -59,7 +59,7 @@ module.exports.add_user = async (user) => {
 module.exports.get_user = async (field, value) => {
     try {
         return await database.query(`
-                    SELECT id, INITCAP(forename) as forename, INITCAP(surname) as surname, email, password, position  
+                    SELECT id, INITCAP(forename) AS forename, INITCAP(surname) AS surname, email, password, position  
                     FROM users
                     WHERE ${field} = :value`
             ,{
@@ -76,8 +76,8 @@ module.exports.get_user = async (field, value) => {
 module.exports.get_instructors = async () => {
     try {
         return await database.query(`
-            SELECT instructors.id as instructor_id, INITCAP(users.forename) as forename, 
-                INITCAP(users.surname) as surname, instructors.hourly_rate
+            SELECT instructors.id AS instructor_id, INITCAP(users.forename) AS forename, 
+                INITCAP(users.surname) AS surname, instructors.hourly_rate
             FROM instructors LEFT JOIN users ON users.id = instructors.id
         `, {
             type: QueryTypes.SELECT,
@@ -183,15 +183,15 @@ module.exports.get_appointments = async (user, future=true) => {
 
     if (is_student) {
         all_appointments = await database.query(`
-                WITH cte as (
+                WITH cte AS (
                     SELECT student_id, instructor_id, year, month, day, half_hr, 
                         half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) as grp
                     FROM appointments
                 )
                 
                
-                SELECT instructor_id, INITCAP(users.forename) as forename, INITCAP(users.surname) as surname, year, 
-                    month, day, MIN(half_hr) as start_time, COUNT(half_hr) AS count_halves
+                SELECT instructor_id, INITCAP(users.forename) AS forename, INITCAP(users.surname) AS surname, year, 
+                    month, day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves
                 FROM cte LEFT JOIN users ON instructor_id = users.id
                 WHERE student_id = :user_id AND year >= ${year} AND month >= ${month} AND day >= ${day}
                 GROUP BY instructor_id, users.forename, users.surname, year, month, day, grp
@@ -210,8 +210,8 @@ module.exports.get_appointments = async (user, future=true) => {
                 )
                 
                 
-                SELECT student_id, INITCAP(users.forename) as forename, INITCAP(users.surname) as surname, year, month, 
-                    day, MIN(half_hr) as start_time, COUNT(half_hr) AS count_halves
+                SELECT student_id, INITCAP(users.forename) AS forename, INITCAP(users.surname) AS surname, year, month, 
+                    day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves
                 FROM cte LEFT JOIN users on student_id = users.id
                 WHERE instructor_id = :user_id AND year >= ${year} AND month >= ${month} AND day >= ${day}
                 GROUP BY student_id, users.forename, users.surname, year, month, day, grp

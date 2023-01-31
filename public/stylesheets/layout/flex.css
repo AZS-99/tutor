@@ -11,6 +11,7 @@ nTTB: newlines arranged Top-to-bottom
 
 *.flex {
     display: flex;
+    align-content: stretch;
 }
 
 *.flex-ctr {
