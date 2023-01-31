@@ -1,11 +1,7 @@
 
-*.txt-green {
-    color: #28a745;
-}
+*.txt-green {color: #28a745;}
 
-*.txt-blue {
-    color: #0275d8;
-}
+*.txt-blue {color: #0275d8;}
 
 *.txt-royalblue {
     color: royalblue;
@@ -17,6 +13,10 @@
 
 *.txt-white {
     color: white;
+}
+
+*.txt-black {
+    color: black;
 }
 
 
