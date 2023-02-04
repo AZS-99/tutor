@@ -94,8 +94,8 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    font: 20px 'Orbitron', sans-serif;
-    font-weight: bolder;
+    font: 22px sans-serif;
+    font-weight: 900;
     text-shadow: 0 0 20px #fff;
     text-transform: uppercase;
     animation: breath2 2s 0.5s infinite alternate;
