@@ -84,7 +84,7 @@ input:invalid+span:after {
 
 
 *.laser-background {
-  background: radial-gradient(#28a745,#1f1013);
+  background: radial-gradient(#0275d8,#1f1013);
   overflow-y: hidden;
   animation: fadeIn 1 1s ease-out;
 }
