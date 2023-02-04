@@ -94,7 +94,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    font: 22px sans-serif;
+    font: 20px 'Orbitron', sans-serif;
     font-weight: bolder;
     text-shadow: 0 0 20px #fff;
     text-transform: uppercase;
