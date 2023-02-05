@@ -5,7 +5,7 @@ module.exports = (Sequelize, database) => {
             primaryKey: true
         },
         grade: "INT CHECK(grade BETWEEN 1 AND 12)",
-        half_hrs_credit: "INT CHECK(half_hrs_credit >= 0) DEFAULT 0"
+        half_hrs_credit: "INT CHECK(half_hrs_credit >= 0) DEFAULT 2"
     }, {
         freezeTableName: true
     })
