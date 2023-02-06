@@ -1,8 +1,9 @@
-<div class="fill-screen flex-ctr">
+{{>navbar}}
+<div class="flex-ctr grow1 laser-background">
     <form action="/users/sign_up" method="POST" >
         <fieldset class="grid-2x0-gap1 p3">
-            <input type="text" name="forename" class="xlg" placeholder="John" pattern="^([A-Z]|[a-z])[a-z]{1,20}$">
-            <input type="text" name="surname" class="xlg" placeholder="Doe" pattern="^([A-Z]|[a-z])[a-z]{1,20}$">
+            <input type="text" name="forename" class="xlg" placeholder="Forename" pattern="^([A-Z]|[a-z])[a-z]{1,20}$">
+            <input type="text" name="surname" class="xlg" placeholder="Surname" pattern="^([A-Z]|[a-z])[a-z]{1,20}$">
 
             <input type="email" name="email" class="xlg span-all-cols" placeholder="Email" pattern="^[a-z_\d.]{2,30}@[a-z]{2,11}\.[a-z]{2,4}$" required />
             <input type="password" name="password" class="xlg span-all-cols" placeholder="Password"
@@ -24,11 +25,11 @@
 
 
             <div class="span-all-cols flex-spread">
-                <button class="xlg btn-luminous">Submit</button>
-                <button class="xlg btn-luminous-red" type="button"><label for="sign_up">Cancel</label></button>
+                <button class="xlg btn-luminous font-orbitron">Submit</button>
+                <button class="xlg btn-luminous-red font-orbitron" type="button"><label for="sign_up">Cancel</label></button>
             </div>
 
-            <label class="lg">Already have an account? <a href="/users/log_in" class="B txt-royalblue">Log in</a></label>
+            <label class="lg txt-white">Already have an account? <a href="/users/log_in" class="B txt-royalblue">Log in</a></label>
 
         </fieldset>
 

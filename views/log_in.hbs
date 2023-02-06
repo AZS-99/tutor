@@ -1,18 +1,22 @@
-<div class="cover-screen flex-ctr" id="log_in_div">
-    <form method="POST" action="/users/log_in" class="grid-1x0-gap1 bg-black p9" autocomplete="off">
+<div class="flex-ctr grow1 laser-background" id="log_in_div">
+    <form method="POST" action="/users/log_in" class=" p9" autocomplete="off">
+        <fieldset class="grid-1x0-gap1">
+            <legend class="B-xlg txt-white">Log in</legend>
 
-        <input type="email" name="email" class="xxlg p-5" placeholder="Email" pattern="^[\w.]{2,30}@[a-z]{2,11}\.[a-z]{2,4}$" title="Enter a valid email" required />
 
-        <input type="password" name="password" class="xxlg" placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w_@./#&+-]{8,30}$"
+        <input type="email" name="email" class="xlg p-5" placeholder="Email" pattern="^[\w.]{2,30}@[a-z]{2,11}\.[a-z]{2,4}$" title="Enter a valid email" size="30" required />
+
+        <input type="password" name="password" class="xlg" placeholder="Password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w_@./#&+-]{8,30}$"
                title="8 alphanumeric characters required with at least 1 uppercase, 1 lowercase, and  1 digit" required/>
 
         <div class="flex-spread">
-            <button class="xxlg btn-luminous">Submit</button>
+            <button class="xxlg btn-luminous font-orbitron">Submit</button>
             <a href="/">
-                <button class="xxlg btn-luminous-red" type="button">Cancel</button>
+                <button class="xxlg btn-luminous-red font-orbitron" type="button">Cancel</button>
             </a>
         </div>
 
         <input type="hidden" name="_csrf" value="{{csurf_token}}"/>
+        </fieldset>
     </form>
 </div>

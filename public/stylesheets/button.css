@@ -83,6 +83,8 @@ button {
 
 
 
+
+
 *.btn-mdn {
     border: 1px solid green;
     backdrop-filter: blur(10px);
@@ -94,7 +96,7 @@ button {
     display: flex;
     align-items: center;
     justify-content: center;
-    font: 22px sans-serif;
+    font-size: 22px;
     font-weight: 900;
     text-shadow: 0 0 20px #fff;
     text-transform: uppercase;
