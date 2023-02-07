@@ -24,7 +24,7 @@ const rateLimiter = async (req, res, next) => {
         await rateLimiterOpts.consume(req.ip)
         next()
     } catch (error) {
-        res.status(429).render('block_page')
+        res.status(429).render('error')
     }
 };
 
