@@ -10,7 +10,7 @@ const client = new Pool({
 
 const rateLimiterOpts = new RateLimiterPostgres({
     storeClient: client,
-    points: 10,             //max number of hits
+    points: 5,             //max number of hits
     duration: 1,           //within 1 second
     blockDuration: 60,
     tableName: 'brute_force',
