@@ -5,10 +5,12 @@ const createError = require('http-errors');
 const enforce_ssl = require('express-enforces-ssl')
 const express = require('express');
 const exphbs = require('express-handlebars')
-const helmet = require('helmet')
+const helmet = require('helmet');
+const cors = require('cors');
 const path = require('path');
 const logger = require('morgan');
 const session = require('./middlewares/session')
+const rateLimiter = require('./middlewares/rateLimiter');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -18,6 +20,7 @@ const globals = require("./middlewares/globals")
 
 
 const app = express();
+
 
 
 // view engine setup
@@ -70,11 +73,38 @@ app.engine('hbs', exphbs.engine({
 }));
 
 // app.use(helmet({
-//
-// }))
+//     contentSecurityPolicy: {
+//       useDefaults: false,
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'", "stripe.com", "googleapis.com"],
+//         objectSrc: ["'none'"],
+//         upgradeInsecureRequests: []
+//       }
+//     }
+//   }
+// ))
 
-app.use(session)
-app.use(globals)
+
+
+
+
+// app.use((req, res, next) => {
+//   if (!(req.headers.referer && req.headers.referer.includes('stripe.com'))) {
+//     app.use(helmet());
+//     app.use(helmet.hidePoweredBy());
+//
+//   }
+//   next();
+// });
+
+
+
+
+
+app.use(session);
+app.use(globals);
+app.use(rateLimiter);
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
