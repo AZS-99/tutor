@@ -24,7 +24,9 @@ const rateLimiter = async (req, res, next) => {
         await rateLimiterOpts.consume(req.ip)
         next()
     } catch (error) {
-        res.status(429).render('error')
+        res.status(429).render('error', {
+            error: "suspicious behaviour"
+        })
     }
 };
 

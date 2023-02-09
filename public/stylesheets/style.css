@@ -7,7 +7,11 @@
 @import "position.css";
 @import "typography.css";
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+@font-face {
+  font-family: orbitron;
+  src: url("fonts/Orbitron.ttf");
+}
 
 :root {
   --theme-colour: #5cb85c;
@@ -21,7 +25,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100vw;
-  font-family: 'Orbitron', sans-serif;
+  font-family: orbitron, sans-serif;
 }
 
 
