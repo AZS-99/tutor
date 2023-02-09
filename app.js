@@ -86,7 +86,8 @@ app.use(helmet({
       objectSrc: ["'none'"],
       upgradeInsecureRequests: [],
     }
-  }
+  },
+  crossOriginResourcePolicy: {policy: "cross-origin"}
 }))
 
 
