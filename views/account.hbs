@@ -1,4 +1,4 @@
-<div class="flex-ctr grow1 laser-background p1 txt-white xlg">
+<div class="flex-TTB-alignCtr grow1 laser-background p1 txt-white xlg">
 
    <div class="flex-ttb">
        <table class="w-inherit">
@@ -6,8 +6,16 @@
            <tr>
                <td>Name</td>
                <td class="flex-RTL">{{session.user.forename}} {{session.user.surname}}</td>
+
            </tr>
-           <tr></tr>
+           <tr>
+               <td>Email</td>
+               <td class="flex-RTL">{{session.user.email}}</td>
+           </tr>
+           <tr>
+               <td>Password</td>
+               <td class="flex-RTL">**********</td>
+           </tr>
            <tr>
                {{#if (equals session.user.position 'STUDENT')}}
                    <td>Hours Credit</td>
@@ -33,6 +41,13 @@
                               value="{{datetime_min}}" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}T1[8-9]:[0-9]{2}$" class="lg" />
 
 
+                       <label>Language</label>
+                       <select name="language" class="xlg">
+                           <option value="c">C++</option>
+                           <option value="java">Java</option>
+                           <option value="python">Python</option>
+                       </select>
+
                        <label>Duration</label>
                        <select name="duration_mins" class="xlg">
                            <option value="60" selected> 60 mins</option>
@@ -49,6 +64,8 @@
                            {{/each}}
                        </select>
 
+
+
                        <span id="availability" class="txt-red B-xlg"></span>
                        <div class="flex-spread"><button class="btn-luminous-blue xlg font-orbitron">Request</button></div>
 
@@ -58,8 +75,10 @@
            </form>
 
        {{/if}}
+   </div>
 
        {{#if appointments}}
+       <div>
            <table class="m-top1">
                <thead >
                <tr class="grid-5x0-gap1">
@@ -104,8 +123,9 @@
                {{/each}}
                </tbody>
            </table>
+       </div>
        {{/if}}
-   </div>
+
 
 </div>
 

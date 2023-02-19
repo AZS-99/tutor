@@ -11,7 +11,7 @@ module.exports.ensure_log_in = (req, res, next) => {
 
 
 module.exports.ensure_no_log = (req, res, next) => {
-    req.session.user?  res.redirect('/') : next();
+    req.session.user?  res.redirect('/users/account') : next();
 }
 
 

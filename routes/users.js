@@ -51,27 +51,6 @@ router.post('/request_slot', ensure_log_in, async (req, res) => {
     res.redirect("/users/account");
 });
 
-
-router.get('/sign_up', ensure_no_log, (req, res) => {
-    res.render('sign_up', {
-        title: "Sign up with Sigma!"
-    });
-});
-
-
-router.post('/sign_up', async (req, res) => {
-    try {
-        const user = await database.add_user(req.body);
-        delete user.password
-        req.session.user = user;
-        res.redirect('/');
-    } catch (e) {
-        console.log("ERROR!!!" + e)
-        res.send(e);
-    }
-});
-
-
 router.get('/log_in', ensure_no_log, (req, res) => {
     res.render('log_in', {
         title: "Log in to Sigma"
@@ -95,6 +74,29 @@ router.post('/log_in', async (req, res) => {
         res.send("Log-in process failed: " + error)
     }
 });
+
+router.get('/sign_up', ensure_no_log, (req, res) => {
+    res.render('sign_up', {
+        title: "Sign up with Sigma!"
+    });
+});
+
+
+router.post('/sign_up', async (req, res) => {
+    try {
+        req.body.position = 'STUDENT'
+        const user = await database.add_user(req.body);
+        delete user.password
+        req.session.user = user;
+        res.redirect('/');
+    } catch (e) {
+        console.log("ERROR!!!" + e)
+        res.send(e);
+    }
+});
+
+
+
 
 
 router.get('/log_out', ensure_log_in, (req, res) => {
