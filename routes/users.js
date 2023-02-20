@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const database = require('../models/database')
 const {verify_user, ensure_log_in, ensure_no_log} = require("../middlewares/access");
 const {get_tomorrow_str, get_date_str} = require("../middlewares/helpers");
@@ -33,8 +34,49 @@ router.get('/account', ensure_log_in, async (req, res) => {
 router.post('/cancel_session', ensure_log_in, async (req, res) => {
     await database.cancel_slot(req.session.user.id, req.body.year, req.body.month, req.body.day, req.body.start_time, req.body.count);
     res.redirect('/users/account')
+});
+
+
+router.get('/change_name', ensure_log_in, (req, res) => {
+    res.render('change_name');
 })
 
+router.post('/change_name', ensure_log_in, async (req, res) => {
+    try {
+        const password = (await database.get_user("id", req.session.user.id)).password
+        const verified = verify_user(req.body.password, password);
+        if (verified) {
+            await database.edit_user(req.session.user.id, "forename", req.body.new_forename);
+            await database.edit_user(req.session.user.id, "surname", req.body.new_surname);
+            req.session.user = await database.get_user("id", req.session.user.id);
+            res.redirect('/');
+        } else res.render("failure", {
+            err: "Wrong password"
+        })
+
+    } catch (e) {
+        throw e;
+    }
+});
+
+router.get('/change_password', ensure_log_in, (req, res) => {
+    res.render('change_password');
+})
+
+router.post('/change_password', ensure_log_in, async (req, res) => {
+    try {
+        const password = (await database.get_user("id", req.session.user.id)).password
+        const verified = verify_user(req.body.old_password, password);
+
+        if (verified) {
+            let new_password = await bcrypt.hash(req.body.new_password, Number(process.env.SALT_ROUNDS));
+            await database.edit_user(req.session.user.id, "password", new_password);
+            res.redirect('/');
+        } else res.render("failure", {err: "Wrong pass"});
+    } catch (e) {
+
+    }
+})
 
 router.post('/request_slot', ensure_log_in, async (req, res) => {
     const student_info = await database.get_user_info(req.session.user);
@@ -61,7 +103,6 @@ router.get('/log_in', ensure_no_log, (req, res) => {
 router.post('/log_in', async (req, res) => {
     try {
         const user = await database.get_user("email", req.body.email)
-        console.log(user);
         const verified = await verify_user(req.body.password, user.password)
         if (verified) {
             delete user.password;

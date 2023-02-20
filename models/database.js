@@ -151,6 +151,20 @@ module.exports.add_student_hrs = async (id, hrs) => {
     }
 }
 
+module.exports.edit_user = async (id, field, value) => {
+    try {
+        await database.query(`
+            UPDATE users
+            SET ${field} = :value
+            WHERE id = ${id}
+        `, {
+            replacements: {value: value}
+        })
+    } catch (e) {
+        throw e
+    }
+}
+
 
 module.exports.get_user_info = async (user) => {
     try {
@@ -166,7 +180,6 @@ module.exports.get_user_info = async (user) => {
     } catch (e) {
         throw e;
     }
-
 }
 
 

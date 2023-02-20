@@ -1,5 +1,6 @@
 button {
     border: none;
+    font-family: orbitron, 'sans-serif';
 }
 
 *.btn-luminous {

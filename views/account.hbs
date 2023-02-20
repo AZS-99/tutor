@@ -6,15 +6,20 @@
            <tr>
                <td>Name</td>
                <td class="flex-RTL">{{session.user.forename}} {{session.user.surname}}</td>
+               <td><a href="/users/change_name"><button class="btn-luminous-red B-xlg">Edit</button></a></td>
+
 
            </tr>
            <tr>
                <td>Email</td>
                <td class="flex-RTL">{{session.user.email}}</td>
+               <td><button class="btn-luminous-red B-xlg">Edit</button></td>
            </tr>
            <tr>
                <td>Password</td>
                <td class="flex-RTL">**********</td>
+               <td><a href="/users/change_password"><button class="btn-luminous-red B-xlg">Edit</button></a></td>
+
            </tr>
            <tr>
                {{#if (equals session.user.position 'STUDENT')}}
