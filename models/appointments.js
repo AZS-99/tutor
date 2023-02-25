@@ -2,6 +2,11 @@ module.exports = (Sequelise, database) => {
     return database.define("appointments", {
         instructor_id: "INT NOT NULL REFERENCES instructors(id) ON DELETE CASCADE",
         student_id: "INT NOT NULL REFERENCES students(id) ON DELETE CASCADE",
+        subject: {
+            type: Sequelise.ENUM,
+            values: ["MATHS", "PHYSICS", "PROGRAMMING"],
+            allowNull: false
+        },
         year: {
             type: "INT NOT NULL CHECK(year > 2022)",
             unique: "uq_appointment"
