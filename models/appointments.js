@@ -13,7 +13,13 @@ module.exports = (database) => {
             values: ["STUDENT_MISSED", "ATTENDED", "INSTRUCTOR_MISSED", "PENDING"],
             defaultValue: "PENDING",
             allowNull: false
-        }
+        },
+        subject_id: {
+            type: "INT REFERENCES subjects(id)",
+            allowNull: false
+        },
+        topic: Sequelise.STRING,
+        details: Sequelise.TEXT
     }, {
         freezeTableName: true,
         indexes: [

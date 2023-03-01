@@ -12,7 +12,6 @@ const instructors = require('./instructors')(database);
 const subjects = require('./subjects')(database);
 const instructor_subjects = require('./instructorSubjects')(database);
 const appointments = require('./appointments')(database);
-const classes = require('./classes')(database);
 const sessions = require('./sessions')(database);
 const packages = require('./packages')(database);
 const admins = require('./admins')(database);
@@ -123,6 +122,7 @@ module.exports.get_instructors = async () => {
 
 module.exports.set_appointment = async (info) => {
     try {
+        console.log(info);
         db_transaction = await database.transaction();
         let user;
         for (let i = 0; i < info.duration; ++i) {
@@ -132,16 +132,11 @@ module.exports.set_appointment = async (info) => {
                 day: info.day,
                 half_hr: info.half_hr + i,
                 student_id: info.student_id,
-                instructor_id: info.instructor_id
+                instructor_id: info.instructor_id,
+                subject_id: info.subject_id
             }, {
                 transaction: db_transaction
             });
-            await classes.create({
-                id: user.id,
-                subject: info.subject
-            }, {
-                transaction: db_transaction
-            })
         }
         await db_transaction.commit();
     } catch (e) {throw e;}
@@ -233,16 +228,16 @@ module.exports.get_appointments = async (user, future=true) => {
                 WITH cte AS (
                     SELECT student_id, instructor_id, year, month, day, half_hr, 
                         half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) AS grp,
-                        subject, topic, details
-                    FROM appointments LEFT JOIN classes ON appointments.id = classes.id
+                        subject_id, topic, details
+                    FROM appointments 
                 )
                 
                
                 SELECT instructor_id, INITCAP(users.forename) AS forename, INITCAP(users.surname) AS surname, year, 
-                    month, day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves, subject, topic, details
+                    month, day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves, subject_id, topic, details
                 FROM cte LEFT JOIN users ON instructor_id = users.id
                 WHERE student_id = :user_id AND year >= ${year} AND month >= ${month} AND day >= ${day}
-                GROUP BY instructor_id, users.forename, users.surname, year, month, day, subject, topic, details, grp
+                GROUP BY instructor_id, users.forename, users.surname, year, month, day, subject_id, topic, details, grp
                 ORDER BY year, month, day
         `, {
             replacements: {user_id: user.id},
@@ -252,18 +247,18 @@ module.exports.get_appointments = async (user, future=true) => {
     } else if (user.position === "INSTRUCTOR") {
         all_appointments = await database.query(`
                 WITH cte AS (
-                    SELECT student_id, instructor_id, year, month, day, half_hr, 
+                    SELECT student_id, instructor_id, year, month, day, half_hr,
                         half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) AS grp,
-                        subject, topic, details
-                    FROM appointments LEFT JOIN classes ON appointments.id = classes.id
+                        subject_id, topic, details
+                    FROM appointments
                 )
                 
                 
                 SELECT student_id, INITCAP(users.forename) AS forename, INITCAP(users.surname) AS surname, year, month, 
-                    day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves, subject, topic, details
+                    day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves, subject_id, topic, details
                 FROM cte LEFT JOIN users on student_id = users.id
                 WHERE instructor_id = :user_id AND year >= ${year} AND month >= ${month} AND day >= ${day}
-                GROUP BY student_id, users.forename, users.surname, year, month, day, subject, topic, details, grp
+                GROUP BY student_id, users.forename, users.surname, year, month, day, subject_id, topic, details, grp
                 ORDER BY year, month, day
         `, {
             replacements: {user_id: user.id},

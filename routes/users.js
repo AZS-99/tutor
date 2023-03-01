@@ -25,6 +25,7 @@ router.get('/account', ensure_log_in, async (req, res) => {
         info: info,
         instructors: instructors,
         appointments: await database.get_appointments(req.session.user),
+        subjects: await database.get_subjects(),
         datetime_min: tomorrow_str,
         datetime_max: next_month
     });
@@ -79,6 +80,7 @@ router.post('/change_password', ensure_log_in, async (req, res) => {
 })
 
 router.post('/request_slot', ensure_log_in, async (req, res) => {
+
     const student_info = await database.get_user_info(req.session.user);
     const date = req.body.slot.slice(0, 10).split("-");
     const time = req.body.slot.slice(11, 16).split(":");

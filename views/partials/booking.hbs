@@ -7,11 +7,11 @@
                    value="{{datetime_min}}" pattern="^[0-9]{4}-[0-9]{2}-[0-9]{2}T1[8-9]:[0-9]{2}$" class="lg" />
 
 
-            <label>Language</label>
-            <select name="subject" class="xlg">
-                <option value="MATHS">Maths</option>
-                <option value="PHYSICS">Physics</option>
-                <option value="PROGRAMMING">Programming</option>
+            <label>Subject</label>
+            <select name="subject_id" class="xlg">
+                {{#each subjects}}
+                    <option value="{{id}}">{{subject}}</option>
+                {{/each}}
             </select>
 
             <label>Duration</label>
