@@ -24,7 +24,7 @@ router.get('/account', ensure_log_in, async (req, res) => {
     res.render('account', {
         info: info,
         instructors: instructors,
-        // appointments: await database.get_appointments(req.session.user),
+        appointments: await database.get_appointments(req.session.user),
         subjects: await database.get_subjects(),
         datetime_min: tomorrow_str,
         datetime_max: next_month
