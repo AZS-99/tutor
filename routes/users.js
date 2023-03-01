@@ -80,14 +80,20 @@ router.post('/change_password', ensure_log_in, async (req, res) => {
 
 router.post('/request_slot', ensure_log_in, async (req, res) => {
     const student_info = await database.get_user_info(req.session.user);
-    const half_hrs_count = Number(req.body.duration_mins) / 30;
     const date = req.body.slot.slice(0, 10).split("-");
     const time = req.body.slot.slice(11, 16).split(":");
-    const half_hr = Number(time[0]) * 2 + (Number(time[1]) === 30? 1 : 0);
 
-    if (half_hrs_count <= student_info.half_hrs_credit) {
-        await database.set_appointment(date[0], date[1], date[2], half_hr, half_hrs_count, req.session.user.id, req.body.instructor_id);
-        await database.add_student_hrs(req.session.user.id, half_hrs_count * -1);
+    req.body.year = date[0];
+    req.body.month = date[1];
+    req.body.day = date[2];
+    req.body.half_hr =  Number(time[0]) * 2 + (Number(time[1]) === 30? 1 : 0);
+    // Duration in half hrs, rather than mins.
+    req.body.duration = Number(req.body.duration_mins) / 30;
+    req.body.student_id = req.session.user.id;
+
+    if (req.body.duration <= student_info.half_hrs_credit) {
+        await database.set_appointment(req.body);
+        await database.add_student_hrs(req.session.user.id, req.body.duration * -1);
     }
 
     res.redirect("/users/account");

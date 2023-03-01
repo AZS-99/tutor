@@ -1,4 +1,6 @@
-module.exports = (Sequelise, database) => {
+const Sequelise = require('sequelize');
+
+module.exports = (database) => {
     return database.define(process.env.SESSIONS_TABLE, {
         sid: {
             type: Sequelise.STRING,

@@ -12,3 +12,8 @@ module.exports.get_date_str = (days_from_today) => {
     return future_date.toISOString().slice(0, 11);
 }
 
+
+module.exports.sliced_date = (date) => {
+
+}
+

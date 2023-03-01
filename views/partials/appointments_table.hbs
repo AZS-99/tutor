@@ -1,0 +1,48 @@
+<div>
+    <table class="m-top1">
+        <thead >
+        <tr class="grid-6x0-gap1">
+
+            <th>Date</th>
+            <th>Start Time</th>
+            <th>Duration (hrs)</th>
+            <th>Subject</th>
+            {{# if (equals session.user.position 'STUDENT')}}
+                <th>Instructor</th>
+            {{else}}
+                <th>Student</th>
+            {{/if}}
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+
+
+        <tbody>
+        {{#each appointments}}
+
+            <tr class="txt-align-ctr grid-6x0-gap1">
+                <td>{{day}}/{{month}}/{{year}}</td>
+                <td>{{int_div start_time 2}}:{{ternary (not_equal (modulo start_time 2) 0) "30" "00"}}</td>
+                <td>{{div count_halves 2}} </td>
+                <td>{{subject}}</td>
+                <td>{{forename}} {{surname}}</td>
+
+                <td>
+                    {{#if (equals ../session.user.position 'STUDENT')}}
+                        <form action="/users/cancel_session" method="POST">
+                            <input type="hidden" name="year" value="{{year}}"/>
+                            <input type="hidden" name="month" value="{{month}}"/>
+                            <input type="hidden" name="day" value="{{day}}"/>
+                            <input type="hidden" name="start_time" value="{{start_time}}"/>
+                            <input type="hidden" name="count" value="{{count_halves}}" />
+                            <button class="btn-luminous-red font-orbitron xlg">Cancel</button>
+                        </form>
+                    {{/if}}
+                </td>
+            </tr>
+
+        {{/each}}
+        </tbody>
+    </table>
+</div>

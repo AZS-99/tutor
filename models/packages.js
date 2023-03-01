@@ -1,4 +1,5 @@
-module.exports = (Sequelise, database) => {
+const Sequelise = require('sequelize');
+module.exports = (database) => {
     return database.define('packages', {
         hours: {
             type: Sequelise.INTEGER,

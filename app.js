@@ -13,7 +13,8 @@ const rateLimiter = require('./middlewares/rateLimiter');
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const enrollRouter = require('./routes/enroll')
+const enrollRouter = require('./routes/enroll');
+const manageRouter = require('./routes/manage');
 
 const globals = require("./middlewares/globals")
 
@@ -107,6 +108,7 @@ app.use(rateLimiter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/enroll', enrollRouter);
+app.use('/manage', manageRouter);
 
 if (process.env.NODE_ENV !== 'development') {
   app.enable('trust proxy')

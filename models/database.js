@@ -6,12 +6,16 @@ pg.defaults.ssl = process.env.NODE_ENV === 'production'? { rejectUnauthorized: f
 
 const database = new Sequelise(process.env.DATABASE_URL)
 
-const users = require('./users')(Sequelise, database);
+const users = require('./users')(database);
 const students = require('./students')(Sequelise, database);
-const instructors = require('./instructors')(Sequelise, database);
-const appointments = require('./appointments')(Sequelise, database);
-const sessions = require('./sessions')(Sequelise, database);
-const packages = require('./packages')(Sequelise, database);
+const instructors = require('./instructors')(database);
+const instructor_subjects = require('./instructorSubjects')(database);
+const appointments = require('./appointments')(database);
+const classes = require('./classes')(database);
+const sessions = require('./sessions')(database);
+const packages = require('./packages')(database);
+const admins = require('./admins')(database);
+const subjects = require('./subjects')(database);
 
 
 let db_transaction;
@@ -23,10 +27,22 @@ module.exports.initialise = async () => {
 }
 
 
+module.exports.is_admin = async (id) => {
+    try {
+        return await database.query(`
+            SELECT EXISTS(SELECT 1 FROM admins WHERE id = :id)
+        `, {
+            replacements: {id: id},
+            raw: true,
+            plain: true
+        });
+    } catch (e) {
+        throw e;
+    }
+}
 
 module.exports.add_user = async (user) => {
     try {
-        console.log(user);
         db_transaction = await database.transaction()
         user.forename = user.forename.toLowerCase();
         user.surname = user.surname.toLowerCase();
@@ -45,16 +61,29 @@ module.exports.add_user = async (user) => {
                 hourly_rate: 20
             }, {
                 transaction: db_transaction
-            })
+            });
+
+            for (const subject_id of user.subjects) {
+                await instructor_subjects.create({
+                    instructor_id: created_user.id,
+                    subject_id: subject_id
+                }, {
+                    transaction: db_transaction
+                })
+            }
         }
 
         await db_transaction.commit();
         return created_user.get({raw: true})
+
     } catch (e) {
         throw e;
     }
 }
 
+module.exports.get_subjects = async () => {
+    return await subjects.findAll({raw: true});
+}
 
 module.exports.get_user = async (field, value) => {
     try {
@@ -91,21 +120,27 @@ module.exports.get_instructors = async () => {
 
 
 
-module.exports.set_appointment = async (year, month, day, half_hr, half_hrs_count, student_id, instructor_id) => {
+module.exports.set_appointment = async (info) => {
     try {
         db_transaction = await database.transaction();
-        for (let i = 0; i < half_hrs_count; ++i) {
-            await appointments.create({
-                year: year,
-                month: month,
-                day: day,
-                half_hr: half_hr + i,
-                student_id: student_id,
-                instructor_id: instructor_id,
-                status: "PENDING"
+        let user;
+        for (let i = 0; i < info.duration; ++i) {
+            user = await appointments.create({
+                year: info.year,
+                month: info.month,
+                day: info.day,
+                half_hr: info.half_hr + i,
+                student_id: info.student_id,
+                instructor_id: info.instructor_id
             }, {
                 transaction: db_transaction
             });
+            await classes.create({
+                id: user.id,
+                subject: info.subject
+            }, {
+                transaction: db_transaction
+            })
         }
         await db_transaction.commit();
     } catch (e) {throw e;}
@@ -116,7 +151,6 @@ module.exports.get_packages = async () => {
     return await packages.findAll({
         raw: true
     });
-
 }
 
 
@@ -191,43 +225,44 @@ module.exports.get_appointments = async (user, future=true) => {
     const month = today_str.slice(5, 7);
     const day = today_str.slice(8, 10);
 
-    const is_student = user.position === "STUDENT"
     let all_appointments;
 
-    if (is_student) {
+    if (user.position === "STUDENT") {
         all_appointments = await database.query(`
                 WITH cte AS (
                     SELECT student_id, instructor_id, year, month, day, half_hr, 
-                        half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) as grp
-                    FROM appointments
+                        half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) AS grp,
+                        subject, topic, details
+                    FROM appointments LEFT JOIN classes ON appointments.id = classes.id
                 )
                 
                
                 SELECT instructor_id, INITCAP(users.forename) AS forename, INITCAP(users.surname) AS surname, year, 
-                    month, day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves
+                    month, day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves, subject, topic, details
                 FROM cte LEFT JOIN users ON instructor_id = users.id
                 WHERE student_id = :user_id AND year >= ${year} AND month >= ${month} AND day >= ${day}
-                GROUP BY instructor_id, users.forename, users.surname, year, month, day, grp
+                GROUP BY instructor_id, users.forename, users.surname, year, month, day, subject, topic, details, grp
                 ORDER BY year, month, day
         `, {
             replacements: {user_id: user.id},
             type: QueryTypes.SELECT,
             raw: true
         })
-    } else {
+    } else if (user.position === "INSTRUCTOR") {
         all_appointments = await database.query(`
-                WITH cte as (
+                WITH cte AS (
                     SELECT student_id, instructor_id, year, month, day, half_hr, 
-                        half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) as grp
-                    FROM appointments
+                        half_hr - ROW_NUMBER() OVER (PARTITION BY student_id, instructor_id, year, month, day ORDER BY half_hr) AS grp,
+                        subject, topic, details
+                    FROM appointments LEFT JOIN classes ON appointments.id = classes.id
                 )
                 
                 
                 SELECT student_id, INITCAP(users.forename) AS forename, INITCAP(users.surname) AS surname, year, month, 
-                    day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves
+                    day, MIN(half_hr) AS start_time, COUNT(half_hr) AS count_halves, subject, topic, details
                 FROM cte LEFT JOIN users on student_id = users.id
                 WHERE instructor_id = :user_id AND year >= ${year} AND month >= ${month} AND day >= ${day}
-                GROUP BY student_id, users.forename, users.surname, year, month, day, grp
+                GROUP BY student_id, users.forename, users.surname, year, month, day, subject, topic, details, grp
                 ORDER BY year, month, day
         `, {
             replacements: {user_id: user.id},

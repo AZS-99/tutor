@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
+const Sequelise = require("sequelize");
 
-module.exports = (Sequelise, database) => {
+module.exports = (database) => {
     return database.define('users', {
         forename: {
             type: Sequelise.STRING,

@@ -1,7 +1,12 @@
 const bcrypt = require("bcrypt");
+const database = require('../models/database')
 
-module.exports.ensure_admin_authority = (req, res, next) => {
-    req.session.user && req.session.user.is_admin? next() : res.redirect('/');
+module.exports.ensure_admin_authority = async (req, res, next) => {
+    if (req.session.user) {
+        const is_admin = await database.is_admin(req.session.user.id);
+        is_admin.exists? next() : res.redirect('/');
+    }
+    else res.redirect('/')
 }
 
 
