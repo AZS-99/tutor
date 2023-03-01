@@ -6,9 +6,8 @@ module.exports = (database) => {
             type: "INT REFERENCES appointments(id) ON DELETE CASCADE",
             primaryKey: true
         },
-        subject: {
-            type: Sequelise.ENUM,
-            values: ["ENGLISH", "MATHS", "PHYSICS", "PROGRAMMING"],
+        subject_id: {
+            type: "INT REFERENCES subjects(id)",
             allowNull: false
         },
         topic: Sequelise.STRING,

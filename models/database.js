@@ -9,13 +9,14 @@ const database = new Sequelise(process.env.DATABASE_URL)
 const users = require('./users')(database);
 const students = require('./students')(database);
 const instructors = require('./instructors')(database);
+const subjects = require('./subjects')(database);
 const instructor_subjects = require('./instructorSubjects')(database);
 const appointments = require('./appointments')(database);
 const classes = require('./classes')(database);
 const sessions = require('./sessions')(database);
 const packages = require('./packages')(database);
 const admins = require('./admins')(database);
-const subjects = require('./subjects')(database);
+
 
 
 let db_transaction;
