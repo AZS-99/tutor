@@ -111,14 +111,17 @@ router.get('/log_in', ensure_no_log, (req, res) => {
 router.post('/log_in', async (req, res) => {
     try {
         const user = await database.get_user("email", req.body.email)
-        const verified = await verify_user(req.body.password, user.password)
-        if (verified) {
-            delete user.password;
-            req.session.user = user;
-            res.redirect('back');
-        }
-        else
-            res.send("Email-Password combination is not valid")
+        if (user) {
+            const verified = await verify_user(req.body.password, user.password)
+            if (verified) {
+                delete user.password;
+                req.session.user = user;
+                res.redirect('back');
+            }
+            else
+                res.send("Email-Password combination is not valid")
+        } else res.send('User does not exist');
+
     } catch (error) {
         res.send("Log-in process failed: " + error)
     }
