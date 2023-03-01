@@ -1,4 +1,6 @@
-module.exports = (Sequelize, database) => {
+const Sequelise = require('sequelize');
+
+module.exports = (database) => {
     return database.define("students", {
         id: {
             type: "INT REFERENCES users(id) ON DELETE CASCADE",

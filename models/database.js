@@ -7,7 +7,7 @@ pg.defaults.ssl = process.env.NODE_ENV === 'production'? { rejectUnauthorized: f
 const database = new Sequelise(process.env.DATABASE_URL)
 
 const users = require('./users')(database);
-const students = require('./students')(Sequelise, database);
+const students = require('./students')(database);
 const instructors = require('./instructors')(database);
 const instructor_subjects = require('./instructorSubjects')(database);
 const appointments = require('./appointments')(database);
