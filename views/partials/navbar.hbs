@@ -1,14 +1,28 @@
 <nav class="w-inherit flex-repel inner-shadow">
 
-    {{#each (ternary session.user logged_nav_lsts nav_lsts)}}
-        <ul class="flex-spread h-inherit">
-            {{#each this}}
-                <li class="p-half">
-                    <a href="{{this}}" class="B-xlg">{{@key}}</a>
-                </li>
-            {{/each}}
-        </ul>
-    {{/each}}
+    {{#if session.user}}
+        {{#each (ternary (equals session.user.position "INSTRUCTOR") nav_instructor nav_student)}}
+            <ul class="flex-spread h-inherit">
+                {{#each this}}
+                    <li class="p-half">
+                        <a href="{{this}}" class="B-xlg">{{@key}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/each}}
+    {{else}}
+        {{#each nav}}
+            <ul class="flex-spread h-inherit">
+                {{#each this}}
+                    <li class="p-half">
+                        <a href="{{this}}" class="B-xlg">{{@key}}</a>
+                    </li>
+                {{/each}}
+            </ul>
+        {{/each}}
+    {{/if}}
+
+
 
 
 </nav>

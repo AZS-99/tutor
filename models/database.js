@@ -27,6 +27,19 @@ module.exports.initialise = async () => {
 }
 
 
+module.exports.get_student_list = async () => {
+    try {
+        return database.query(`
+            SELECT forename, surname, email, half_hrs_credit
+            FROM users RIGHT JOIN students ON users.id = students.id
+        `, {
+            type: QueryTypes.SELECT,
+            raw: true
+        })
+    } catch (e) {throw e;}
+}
+
+
 module.exports.is_admin = async (id) => {
     try {
         return await database.query(`
@@ -88,9 +101,13 @@ module.exports.get_subjects = async () => {
 module.exports.get_user = async (field, value) => {
     try {
         return await database.query(`
-                    SELECT id, INITCAP(forename) AS forename, INITCAP(surname) AS surname, email, password, position  
-                    FROM users
-                    WHERE ${field} = :value`
+                    SELECT users.id, INITCAP(forename) AS forename, INITCAP(surname) AS surname, email, password,
+                    CASE 
+                        WHEN instructors.id IS NOT NULL THEN 'INSTRUCTOR'
+                        WHEN students.id IS NOT NULL THEN 'STUDENT'
+                    END AS position
+                    FROM users LEFT JOIN instructors ON users.id = instructors.id LEFT JOIN students ON users.id = students.id
+                    WHERE users.${field} = :value`
             ,{
                 replacements: {
                     value: value

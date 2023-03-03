@@ -4,6 +4,16 @@ const {ensure_admin_authority} = require("../middlewares/access");
 const router = express.Router()
 
 
+router.get('/list_students', ensure_admin_authority, async (req, res) => {
+    try {
+        res.send(await database.get_student_list());
+    } catch (e) {
+        res.render('error', {
+            error: e
+        })
+    }
+});
+
 router.get('/register_instructor', ensure_admin_authority, async (req, res) => {
     res.render('create_instructor', {
         subjects: await database.get_subjects()
