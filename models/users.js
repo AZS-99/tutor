@@ -12,7 +12,6 @@ module.exports = (database) => {
                     msg: ['Server rejected forename']
                 }
             }
-
         },
         surname: {
             type: Sequelise.STRING,

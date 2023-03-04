@@ -39,7 +39,7 @@ router.post('/cancel_session', ensure_log_in, async (req, res) => {
 
 
 router.get('/change_name', ensure_log_in, (req, res) => {
-    res.render('change_name');
+    res.render('users/change_name');
 })
 
 router.post('/change_name', ensure_log_in, async (req, res) => {
@@ -102,7 +102,7 @@ router.post('/request_slot', ensure_log_in, async (req, res) => {
 });
 
 router.get('/log_in', ensure_no_log, (req, res) => {
-    res.render('log_in', {
+    res.render('users/log_in', {
         title: "Log in to Sigma"
     });
 });
@@ -128,7 +128,7 @@ router.post('/log_in', async (req, res) => {
 });
 
 router.get('/sign_up', ensure_no_log, (req, res) => {
-    res.render('sign_up', {
+    res.render('users/sign_up', {
         title: "Sign up with Sigma!"
     });
 });

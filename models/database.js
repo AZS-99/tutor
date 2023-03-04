@@ -27,32 +27,7 @@ module.exports.initialise = async () => {
 }
 
 
-module.exports.get_student_list = async () => {
-    try {
-        return database.query(`
-            SELECT forename, surname, email, half_hrs_credit
-            FROM users RIGHT JOIN students ON users.id = students.id
-        `, {
-            type: QueryTypes.SELECT,
-            raw: true
-        })
-    } catch (e) {throw e;}
-}
 
-
-module.exports.is_admin = async (id) => {
-    try {
-        return await database.query(`
-            SELECT EXISTS(SELECT 1 FROM admins WHERE id = :id)
-        `, {
-            replacements: {id: id},
-            raw: true,
-            plain: true
-        });
-    } catch (e) {
-        throw e;
-    }
-}
 
 module.exports.add_user = async (user) => {
     try {
@@ -89,6 +64,39 @@ module.exports.add_user = async (user) => {
         await db_transaction.commit();
         return created_user.get({raw: true})
 
+    } catch (e) {
+        throw e;
+    }
+}
+
+module.exports.add_subject = async (subject) => {
+    try{subjects.create({subject: subject})}
+    catch (e) { throw e}
+}
+
+
+module.exports.get_student_list = async () => {
+    try {
+        return database.query(`
+            SELECT forename, surname, email, half_hrs_credit
+            FROM users RIGHT JOIN students ON users.id = students.id
+        `, {
+            type: QueryTypes.SELECT,
+            raw: true
+        })
+    } catch (e) {throw e;}
+}
+
+
+module.exports.is_admin = async (id) => {
+    try {
+        return await database.query(`
+            SELECT EXISTS(SELECT 1 FROM admins WHERE id = :id)
+        `, {
+            replacements: {id: id},
+            raw: true,
+            plain: true
+        });
     } catch (e) {
         throw e;
     }
