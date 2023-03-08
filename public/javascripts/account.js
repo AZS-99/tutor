@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", evt => {
 
 
     const datetime = document.querySelector('input[type="datetime-local"]');
+    datetime.disabled = true
 
 
 
@@ -25,7 +26,7 @@ document.addEventListener("DOMContentLoaded", evt => {
     })
 
     subject_select.addEventListener('change', async evt => {
-        const options = instructor_select.querySelectorAll('option');
+        datetime.disabled = false;
         const response = await fetch('/users/get_instructors_tutoring', {
             method: 'POST',
             headers: {

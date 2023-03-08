@@ -162,6 +162,7 @@ module.exports.get_instructors_tutoring = async(subject_id) => {
             FROM instructors LEFT JOIN users ON instructors.id = users.id
                 LEFT JOIN instructor_subjects ON instructors.id = instructor_subjects.instructor_id
             WHERE :subject_id = instructor_subjects.subject_id
+            ORDER BY forename, surname
         `,{
             type: QueryTypes.SELECT,
             replacements: {subject_id: subject_id}
