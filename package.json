@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "alert": "^5.1.4",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.1",
     "connect-pg-simple": "^7.0.0",
@@ -21,6 +22,7 @@
     "helmet": "^5.1.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
+    "nodejs-nodemailer-outlook": "^1.2.4",
     "pg": "^8.8.0",
     "rate-limiter-flexible": "^2.4.1",
     "sequelize": "^6.23.2",

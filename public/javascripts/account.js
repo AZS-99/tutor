@@ -2,7 +2,8 @@ document.addEventListener("DOMContentLoaded", evt => {
 
     const form = document.getElementById('book_slot_form');
     const instructor_select = document.getElementById('instructor_select');
-    const btn = document.querySelector("form > button")
+    const subject_select = document.querySelector("select[name=subject_id]");
+    const btn = document.querySelector("form button")
     const cancel_session_btns = document.querySelectorAll("td > form > button");
 
 
@@ -22,6 +23,24 @@ document.addEventListener("DOMContentLoaded", evt => {
             if (!answer) evt.preventDefault();
         })
     })
+
+    subject_select.addEventListener('change', async evt => {
+        const options = instructor_select.querySelectorAll('option');
+        const response = await fetch('/users/get_instructors_tutoring', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({subject_id: subject_select.value})
+        });
+        const instructors = await response.json();
+        for (let instructor of instructors) {
+            let optionInstructor = document.createElement('option');
+            optionInstructor.value = instructor.id;
+            optionInstructor.textContent = instructor.forename + ' ' + instructor.surname;
+            instructor_select.add(optionInstructor);
+        }
+    });
 
     datetime.addEventListener('input', async evt => {
         slot_is_available = true;

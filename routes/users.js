@@ -1,6 +1,9 @@
 const express = require('express');
+const alert = require('alert');
 const bcrypt = require('bcrypt');
-const database = require('../models/database')
+const nodeoutlook = require('nodejs-nodemailer-outlook');
+const database = require('../models/database');
+
 const {verify_user, ensure_log_in, ensure_no_log} = require("../middlewares/access");
 const {get_tomorrow_str, get_date_str} = require("../middlewares/helpers");
 
@@ -13,7 +16,6 @@ router.get('/', (req, res, next) => {
 
 
 router.get('/account', ensure_log_in, async (req, res) => {
-    const instructors = await database.get_instructors();
     const info = await database.get_user_info(req.session.user);
 
     let tomorrow_str = get_tomorrow_str();
@@ -23,7 +25,6 @@ router.get('/account', ensure_log_in, async (req, res) => {
 
     res.render('account', {
         info: info,
-        instructors: instructors,
         appointments: await database.get_appointments(req.session.user),
         subjects: await database.get_subjects(),
         datetime_min: tomorrow_str,
@@ -136,11 +137,23 @@ router.get('/sign_up', ensure_no_log, (req, res) => {
 
 router.post('/sign_up', async (req, res) => {
     try {
-        req.body.position = 'STUDENT'
-        const user = await database.add_user(req.body);
-        delete user.password
-        req.session.user = user;
-        res.redirect('/');
+        req.session.tmp_user = req.body;
+        req.session.tmp_user.position = 'STUDENT';
+        req.session.tmp_user.confirm_code = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+
+        nodeoutlook.sendEmail({
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASS
+            },
+            from: process.env.EMAIL,
+            to: req.body.email,
+            subject: 'Confirm your email',
+            html: '<p>We got a request to create an account on sigmaedu.ca using your email. If that was you, please confirm using the following code:<p>' +
+                '<h1>' + req.session.tmp_user.confirm_code + '</h1>',
+            onError: (e) => console.log(e)
+        })
+        res.redirect('/users/confirm_email');
     } catch (e) {
         console.log("ERROR!!!" + e)
         res.send(e);
@@ -148,6 +161,29 @@ router.post('/sign_up', async (req, res) => {
 });
 
 
+router.get('/confirm_email', (req, res) => {
+    res.render('users/confirm_code');
+})
+
+
+router.post('/confirm_email', async (req, res) => {
+    try {
+        if (req.body.code === req.session.tmp_user.confirm_code) {
+            const user = await database.add_user(req.session.tmp_user);
+            delete user.password;
+            req.session.user = user;
+            req.session.user.position = 'STUDENT';
+            delete req.session.tmp_user;
+            console.log(req.session.user);
+            res.redirect('/users/account');
+        } else {
+            delete req.session.tmp_user;
+            res.send('Sorry, that confirmation code you entered was incorrect!!');
+        }
+    } catch (error) {
+        res.send(error)
+    }
+})
 
 
 
@@ -162,6 +198,15 @@ router.post('/unavailable_slots', express.json({type: 'application/json'}), asyn
         res.send(await database.get_unavailable_slots(req.body.year, req.body.month, req.body.day, req.body.instructor_id));
     } catch (e) {
         console.log(e.message);
+    }
+})
+
+
+router.post('/get_instructors_tutoring', express.json({type: 'application/json'}), async(req, res) => {
+    try {
+        res.send(await database.get_instructors_tutoring(req.body.subject_id));
+    } catch (e) {
+        res.render('error', {error: e});
     }
 })
 

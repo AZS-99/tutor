@@ -40,7 +40,8 @@ module.exports = (database) => {
                     msg: ['Server rejected password']
                 }
             }
-        }
+        },
+        active: "BOOLEAN NOT NULL SET DEFAULT TRUE"
 
     }, {
         hooks: {

@@ -28,7 +28,6 @@ module.exports.initialise = async () => {
 
 
 
-
 module.exports.add_user = async (user) => {
     try {
         db_transaction = await database.transaction()
@@ -69,9 +68,21 @@ module.exports.add_user = async (user) => {
     }
 }
 
+
 module.exports.add_subject = async (subject) => {
     try{subjects.create({subject: subject})}
     catch (e) { throw e}
+}
+
+
+module.exports.deactivate_user = async (id) => {
+    try {
+        await database.query(`
+            ALTER TABLE users
+            SET active = FALSE
+            WHERE id = :id
+        `, { replacements: {id: id} })
+    } catch (e) { throw e }
 }
 
 
@@ -86,6 +97,7 @@ module.exports.get_student_list = async () => {
         })
     } catch (e) {throw e;}
 }
+
 
 
 module.exports.is_admin = async (id) => {
@@ -139,6 +151,23 @@ module.exports.get_instructors = async () => {
         });
     } catch (e) {
         throw e
+    }
+}
+
+
+module.exports.get_instructors_tutoring = async(subject_id) => {
+    try {
+        return await database.query(`
+            SELECT instructors.*, INITCAP(users.forename) AS forename, INITCAP(users.surname) AS surname
+            FROM instructors LEFT JOIN users ON instructors.id = users.id
+                LEFT JOIN instructor_subjects ON instructors.id = instructor_subjects.instructor_id
+            WHERE :subject_id = instructor_subjects.subject_id
+        `,{
+            type: QueryTypes.SELECT,
+            replacements: {subject_id: subject_id}
+        })
+    } catch (e) {
+        throw e;
     }
 }
 
