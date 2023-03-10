@@ -121,13 +121,13 @@ module.exports.get_subjects = async () => {
 module.exports.get_user = async (field, value) => {
     try {
         return await database.query(`
-                    SELECT users.id, INITCAP(forename) AS forename, INITCAP(surname) AS surname, email, password,
-                    CASE 
-                        WHEN instructors.id IS NOT NULL THEN 'INSTRUCTOR'
-                        WHEN students.id IS NOT NULL THEN 'STUDENT'
-                    END AS position
-                    FROM users LEFT JOIN instructors ON users.id = instructors.id LEFT JOIN students ON users.id = students.id
-                    WHERE users.${field} = :value`
+                SELECT users.id, INITCAP(forename) AS forename, INITCAP(surname) AS surname, email, password,
+                CASE 
+                    WHEN instructors.id IS NOT NULL THEN 'INSTRUCTOR'
+                    WHEN students.id IS NOT NULL THEN 'STUDENT'
+                END AS position
+                FROM users LEFT JOIN instructors ON users.id = instructors.id LEFT JOIN students ON users.id = students.id
+                WHERE users.${field} = :value`
             ,{
                 replacements: {
                     value: value

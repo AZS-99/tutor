@@ -1,6 +1,8 @@
-<h2 class="span-cols-5-9">We've sent you a four-digit confirmation code to {{session.tmp_user.email}}.
-    Please enter it below to confirm your email address (check your spam mail in case you couldn't find it).</h2>
-<form action='/users/confirm_email' method="POST" class="span-cols-5-9 span-rows-8-10">
-    <input name="code" type="text" class="xlg" placeholder="Enter your 4-digit code" />
-    <button class="xlg">Submit</button>
-</form>
+<div class="laser-background flex-TTB grow1 txt-white p1">
+    <h2 class="span-cols-5-9">We've sent a four-digit confirmation code to {{session.tmp_user.email}}.
+        Please enter it below to confirm your email address (check your spam mail in case you couldn't find it).</h2>
+    <form action='/users/confirm_email' method="POST" class="span-cols-5-9 span-rows-8-10">
+        <input name="code" type="text" class="xlg" placeholder="Enter your 4-digit code" />
+        <button class="xlg btn-luminous-blue">Submit</button>
+    </form>
+</div>

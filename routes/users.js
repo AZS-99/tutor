@@ -16,26 +16,32 @@ router.get('/', (req, res, next) => {
 
 
 router.get('/account', ensure_log_in, async (req, res) => {
-    const info = await database.get_user_info(req.session.user);
+    try {
+        const info = await database.get_user_info(req.session.user);
 
-    let tomorrow_str = get_tomorrow_str();
-    let next_month = get_date_str(30);
-    tomorrow_str += "17:00";
-    next_month += "17:00";
+        let tomorrow_str = get_tomorrow_str();
+        let next_month = get_date_str(30);
+        tomorrow_str += "17:00";
+        next_month += "17:00";
 
-    res.render('account', {
-        info: info,
-        appointments: await database.get_appointments(req.session.user),
-        subjects: await database.get_subjects(),
-        datetime_min: tomorrow_str,
-        datetime_max: next_month
-    });
+        res.render('account', {
+            info: info,
+            appointments: await database.get_appointments(req.session.user),
+            subjects: await database.get_subjects(),
+            datetime_min: tomorrow_str,
+            datetime_max: next_month
+        });
+    } catch (e) {res.render('error', {error: e});}
+
 });
 
 
 router.post('/cancel_session', ensure_log_in, async (req, res) => {
-    await database.cancel_slot(req.session.user.id, req.body.year, req.body.month, req.body.day, req.body.start_time, req.body.count);
-    res.redirect('/users/account')
+    try {
+        await database.cancel_slot(req.session.user.id, req.body.year, req.body.month, req.body.day, req.body.start_time, req.body.count);
+        res.redirect('/users/account')
+    }catch (e) {res.render('error', {error: e});}
+
 });
 
 
@@ -56,9 +62,7 @@ router.post('/change_name', ensure_log_in, async (req, res) => {
             err: "Wrong password"
         })
 
-    } catch (e) {
-        throw e;
-    }
+    } catch (e) {res.render('error', {error: e});}
 });
 
 router.get('/change_password', ensure_log_in, (req, res) => {
@@ -75,9 +79,7 @@ router.post('/change_password', ensure_log_in, async (req, res) => {
             await database.edit_user(req.session.user.id, "password", new_password);
             res.redirect('/');
         } else res.render("failure", {err: "Wrong pass"});
-    } catch (e) {
-
-    }
+    } catch (e) {res.render('error', {error: e});}
 })
 
 router.post('/request_slot', ensure_log_in, async (req, res) => {
@@ -90,13 +92,14 @@ router.post('/request_slot', ensure_log_in, async (req, res) => {
     req.body.month = date[1];
     req.body.day = date[2];
     req.body.half_hr =  Number(time[0]) * 2 + (Number(time[1]) === 30? 1 : 0);
-    // Duration in half hrs, rather than mins.
-    req.body.duration = Number(req.body.duration_mins) / 30;
+    req.body.duration = Number(req.body.duration);
     req.body.student_id = req.session.user.id;
 
     if (req.body.duration <= student_info.half_hrs_credit) {
         await database.set_appointment(req.body);
         await database.add_student_hrs(req.session.user.id, req.body.duration * -1);
+    } else {
+        res.render('failure', {failure: "Your credit hours are not enough, please add more hours to your account"});
     }
 
     res.redirect("/users/account");
@@ -123,9 +126,7 @@ router.post('/log_in', async (req, res) => {
                 res.send("Email-Password combination is not valid")
         } else res.send('User does not exist');
 
-    } catch (error) {
-        res.send("Log-in process failed: " + error)
-    }
+    }  catch (e) {res.render('error', {error: e});}
 });
 
 router.get('/sign_up', ensure_no_log, (req, res) => {
@@ -154,10 +155,7 @@ router.post('/sign_up', async (req, res) => {
             onError: (e) => console.log(e)
         })
         res.redirect('/users/confirm_email');
-    } catch (e) {
-        console.log("ERROR!!!" + e)
-        res.send(e);
-    }
+    }  catch (e) {res.render('error', {error: e});}
 });
 
 
@@ -180,9 +178,7 @@ router.post('/confirm_email', async (req, res) => {
             delete req.session.tmp_user;
             res.send('Sorry, that confirmation code you entered was incorrect!!');
         }
-    } catch (error) {
-        res.send(error)
-    }
+    }  catch (e) {res.render('error', {error: e});}
 })
 
 
@@ -196,18 +192,14 @@ router.get('/log_out', ensure_log_in, (req, res) => {
 router.post('/unavailable_slots', express.json({type: 'application/json'}), async (req, res) => {
     try {
         res.send(await database.get_unavailable_slots(req.body.year, req.body.month, req.body.day, req.body.instructor_id));
-    } catch (e) {
-        console.log(e.message);
-    }
+    }  catch (e) {res.render('error', {error: e});}
 })
 
 
 router.post('/get_instructors_tutoring', express.json({type: 'application/json'}), async(req, res) => {
     try {
         res.send(await database.get_instructors_tutoring(req.body.subject_id));
-    } catch (e) {
-        res.render('error', {error: e});
-    }
+    }  catch (e) {res.render('error', {error: e});}
 })
 
 module.exports = router;
