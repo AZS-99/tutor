@@ -41,6 +41,15 @@ module.exports = (database) => {
                 }
             }
         },
+        phone_number: {
+            type: Sequelise.STRING(15),
+            validate: {
+                is: {
+                    args: ["^\+?[0-9]{9,15}$"],
+                    msg:["Database rejected Phone number: Phone number not valid"]
+                }
+            }
+        },
         active: "BOOLEAN NOT NULL SET DEFAULT TRUE"
 
     }, {

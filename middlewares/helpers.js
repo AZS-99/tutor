@@ -1,3 +1,5 @@
+const nodeoutlook = require("nodejs-nodemailer-outlook");
+
 module.exports.get_tomorrow_str = () => {
     let tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -13,7 +15,17 @@ module.exports.get_date_str = (days_from_today) => {
 }
 
 
-module.exports.sliced_date = (date) => {
-
+module.exports.send_email = (email, subject, msg) => {
+    nodeoutlook.sendEmail({
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.EMAIL_PASS
+        },
+        from: process.env.EMAIL,
+        to: email,
+        subject: subject,
+        html: '<p>' + msg + '<p>',
+        onError: (e) => console.log(e)
+    })
 }
 

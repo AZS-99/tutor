@@ -2,12 +2,13 @@
     <p class="xlg">Get one free hour simply by registering!</p>
     <form action="/users/sign_up" method="POST" >
         <fieldset class="grid-2x0-gap1 p3">
-            <input type="text" name="forename" class="xlg" placeholder="Forename" pattern="^([A-Z]|[a-z])[a-z]{1,20}$">
-            <input type="text" name="surname" class="xlg" placeholder="Surname" pattern="^([A-Z]|[a-z])[a-z]{1,20}$">
+            <input type="text" name="forename" class="xlg" placeholder="Forename" pattern="^([A-Z]|[a-z])[a-z]{1,20}$" required>
+            <input type="text" name="surname" class="xlg" placeholder="Surname" pattern="^([A-Z]|[a-z])[a-z]{1,20}$" required>
 
             <input type="email" name="email" class="xlg span-all-cols" placeholder="Email" pattern="^[a-z_\d.]{2,30}@[a-z]{2,11}\.[a-z]{2,4}$" required />
             <input type="password" name="password" class="xlg span-all-cols" placeholder="Password"
                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w_@./#&+-]{8,30}$" autocomplete="new-password" required/>
+            <input type="text" name="phone_number" class="xlg" pattern="^\+?\d{9,15}" placeholder="Phone Number" required/>
 
 
             <div>
@@ -19,6 +20,12 @@
                     <option value="4">4</option>
                     <option value="5">5</option>
                     <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
                 </select>
             </div>
 

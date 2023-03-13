@@ -5,7 +5,8 @@ const nodeoutlook = require('nodejs-nodemailer-outlook');
 const database = require('../models/database');
 
 const {verify_user, ensure_log_in, ensure_no_log} = require("../middlewares/access");
-const {get_tomorrow_str, get_date_str} = require("../middlewares/helpers");
+const {get_tomorrow_str, get_date_str, send_email} = require("../middlewares/helpers");
+const {sendEmail} = require("nodejs-nodemailer-outlook");
 
 const router = express.Router();
 
@@ -98,6 +99,10 @@ router.post('/request_slot', ensure_log_in, async (req, res) => {
     if (req.body.duration <= student_info.half_hrs_credit) {
         await database.set_appointment(req.body);
         await database.add_student_hrs(req.session.user.id, req.body.duration * -1);
+        if (process.env.NODE_ENV === "production") {
+            send_email("adam.zachary.saher@gmail.com", "Slot requested", "Check new activity on Sigma");
+            send_email(req.session.user.email, "Lesson Booked", "A lesson has been booked, check your account on www.sigmaedu.ca!");
+        }
     } else {
         res.render('failure', {failure: "Your credit hours are not enough, please add more hours to your account"});
     }
@@ -124,7 +129,7 @@ router.post('/log_in', async (req, res) => {
             }
             else
                 res.send("Email-Password combination is not valid")
-        } else res.send('User does not exist');
+        } else res.render('failure', {failure: "User does not exist"});
 
     }  catch (e) {res.render('error', {error: e});}
 });
@@ -142,18 +147,12 @@ router.post('/sign_up', async (req, res) => {
         req.session.tmp_user.position = 'STUDENT';
         req.session.tmp_user.confirm_code = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
 
-        nodeoutlook.sendEmail({
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASS
-            },
-            from: process.env.EMAIL,
-            to: req.body.email,
-            subject: 'Confirm your email',
-            html: '<p>We got a request to create an account on sigmaedu.ca using your email. If that was you, please confirm using the following code:<p>' +
-                '<h1>' + req.session.tmp_user.confirm_code + '</h1>',
-            onError: (e) => console.log(e)
-        })
+        let msg = "We have received a request to create an account on www.sigmaedu.ca using this email. If this was you"
+        msg += " please enter the following code:";
+        msg += req.session.tmp_user.confirm_code;
+
+        send_email(req.body.email, "Confirm your Email on Sigma", msg);
+
         res.redirect('/users/confirm_email');
     }  catch (e) {res.render('error', {error: e});}
 });
