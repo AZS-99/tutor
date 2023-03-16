@@ -185,6 +185,13 @@ router.post('/confirm_email', async (req, res) => {
 router.get('/log_out', ensure_log_in, (req, res) => {
     req.session.destroy();
     res.redirect('/')
+});
+
+
+router.post('/leave_msg', (res, req) => {
+    send_email(process.env.EMAIL, "Contact Msg", req.body.message);
+    res.render('completed', {msg: "We have received your message!"});
+
 })
 
 
