@@ -188,9 +188,9 @@ router.get('/log_out', ensure_log_in, (req, res) => {
 });
 
 
-router.post('/leave_msg', (res, req) => {
-    send_email(process.env.EMAIL, "Contact Msg", req.body.message);
-    res.render('completed', {msg: "We have received your message!"});
+router.post('/leave_msg', (req, res) => {
+    send_email(process.env.EMAIL, "Contact Msg", req.body.msg);
+    res.render('complete', {msg: "We have received your message!"});
 
 })
 
