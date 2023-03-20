@@ -79,7 +79,7 @@ app.use(helmet({
     useDefaults: false,
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://checkout.stripe.com", "https://b.stripecdn.com", "https://js.stripe.com/", "https://maps.googleapis.com"],
+      scriptSrc: ["'self'", "https://checkout.stripe.com", "https://b.stripecdn.com", "https://js.stripe.com/", "https://maps.googleapis.com", "https://www.googletagmanager.com/gtag/js?id=G-MZ4FCEQWFC"],
       connectSrc: ["'self'", "https://checkout.stripe.com", "https://api.stripe.com", "https://maps.googleapis.com"],
       frameSrc: ["'self'", "https://checkout.stripe.com", "https://b.stripecdn.com", "https://js.stripe.com", "https://hooks.stripe.com"],
       imgSrc: ["'self'", "https://*.stripe.com"],

@@ -3,6 +3,16 @@
     <head>
         <title>{{title}}</title>
         <link rel='stylesheet' href='/public/stylesheets/style.css' />
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-MZ4FCEQWFC">
+        </script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-MZ4FCEQWFC');
+        </script>
     </head>
     <body class="fill-screen flex-TTB">
         {{>navbar}}
