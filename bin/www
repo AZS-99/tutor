@@ -87,6 +87,7 @@ const bcrypt = require('bcrypt');
 
 async function onListening() {
   try {
+
     await database.initialise();
     const addr = server.address();
     const bind = typeof addr === 'string'
