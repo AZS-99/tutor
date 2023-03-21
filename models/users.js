@@ -50,7 +50,7 @@ module.exports = (database) => {
                 }
             }
         },
-        active: "BOOLEAN NOT NULL SET DEFAULT TRUE"
+        active: "BOOLEAN NOT NULL DEFAULT TRUE"
 
     }, {
         hooks: {
