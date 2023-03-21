@@ -67,7 +67,7 @@ router.post('/change_name', ensure_log_in, async (req, res) => {
 });
 
 router.get('/change_password', ensure_log_in, (req, res) => {
-    res.render('change_password');
+    res.render('users/change_password');
 })
 
 router.post('/change_password', ensure_log_in, async (req, res) => {
