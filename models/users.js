@@ -45,7 +45,7 @@ module.exports = (database) => {
             type: Sequelise.STRING(15),
             validate: {
                 is: {
-                    args: ["^\+?[0-9]{9,15}$"],
+                    args: ["^[+]?[0-9]{9,15}$"],
                     msg:["Database rejected Phone number: Phone number not valid"]
                 }
             }
