@@ -14,7 +14,7 @@ const session = (express_session({
     name: 'efas_session',
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
         secure: process.env.NODE_ENV !== 'development'
     }
